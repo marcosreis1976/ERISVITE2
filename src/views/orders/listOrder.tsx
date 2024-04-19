@@ -334,10 +334,10 @@ const ListOrder = () => {
     nameStatuss >= 0 ? parameter = parameter + `&statusPainel=${nameStatuss}` : null
     nameEstoque >= 0 ? parameter = parameter + `&statusEstoque=${nameEstoque}` : null
     nameCliente != '' ? parameter = parameter + `&cliente=${nameCliente}` : null
-    // formValue.pedido != '' ? parameter = parameter + `&pedido=${formValue.pedido}` : null
-    // formValue.pedidoWeb != '' ? parameter = parameter + `&pedidoWeb=${formValue.pedidoWeb}` : null
-    // formValue.dataInicial != '' ? parameter = parameter + `&dataInicial=${formValue.dataInicial}` : null
-    // formValue.dataFinal != '' ? parameter = parameter + `&dataFinal=${formValue.dataFinal}` : null
+    // pedido != '' ? parameter = parameter + `&pedido=${formValue.pedido}` : null
+    // pedidoWeb != '' ? parameter = parameter + `&pedidoWeb=${formValue.pedidoWeb}` : null
+    // dataInicial != '' ? parameter = parameter + `&dataInicial=${formValue.dataInicial}` : null
+    // dataFinal != '' ? parameter = parameter + `&dataFinal=${formValue.dataFinal}` : null
 
      setParameter(parameter)
 
@@ -620,7 +620,7 @@ const ListOrder = () => {
                 </Grid>
                 <Grid item xs={12} lg={1}>
                 <CustomFormLabel style={{fontSize: '10pt'}} htmlFor="standard-select-currency">Pedido Web</CustomFormLabel>
-                <CustomTextField id="password" onChange={handleChangeDataInicial} type="text" variant="outlined" fullWidth
+                <CustomTextField id="password" onChange={handleChangePedido} type="text" variant="outlined" fullWidth
       
       />
                 </Grid>
