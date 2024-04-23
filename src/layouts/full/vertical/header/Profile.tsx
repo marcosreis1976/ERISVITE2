@@ -19,11 +19,16 @@ import { IconMail } from '@tabler/icons-react';
 import ProfileImg from 'src/assets/images/profile/user-1.jpg';
 import unlimitedImg from 'src/assets/images/backgrounds/unlimited-bg.png';
 import { getUserLocalStorage } from "src/context/autoProvider/auth";
+import * as AuthService from "../../../../services/auth.service";
 import axios from "axios";
+import { useNavigate } from "react-router";
+
 
 
 const Profile = () => {
+  const navigate = useNavigate();
   const [anchorEl2, setAnchorEl2] = useState(null);
+  const [user, setUser] = useState(AuthService.getCurrentUser());
   const handleClick2 = (event: any) => {
     setAnchorEl2(event.currentTarget);
   };
@@ -45,7 +50,6 @@ const Profile = () => {
      (config) => {
          const user = getUserLocalStorage();
 
-         console.log(user);
 
          return config;
      },
@@ -57,6 +61,11 @@ const Profile = () => {
     console.log('oiii')
   
   });
+
+  const logout = () =>{
+    AuthService.logout()
+    navigate("/auth/login");
+  }
 
   return (
     <Box>
@@ -105,12 +114,12 @@ const Profile = () => {
           <Avatar src={ProfileImg} alt={ProfileImg} sx={{ width: 95, height: 95 }} />
           <Box>
             <Typography variant="subtitle2" color="textPrimary" fontWeight={600}>
-              Mathew Anderson
+            {user.userName}
             </Typography>
-            <Typography variant="subtitle2" color="textSecondary">
+            {/* <Typography variant="subtitle2" color="textSecondary">
             Designer
-            </Typography>
-            <Typography
+            </Typography> */}
+            {/* <Typography
               variant="subtitle2"
               color="textSecondary"
               display="flex"
@@ -119,7 +128,7 @@ const Profile = () => {
             >
               <IconMail width={15} height={15} />
               info@modernize.com
-            </Typography>
+            </Typography> */}
           </Box>
         </Stack>
         <Divider />
@@ -189,8 +198,10 @@ const Profile = () => {
               </Box>
               <img src={unlimitedImg} alt="unlimited" className="signup-bg"></img>
             </Box>
-          </Box> */}
-          <Button to="/auth/login" variant="outlined" color="primary" component={Link} fullWidth>
+          </Box> 
+          
+          to="/auth/login"*/}
+          <Button onClick={()=>logout()}  variant="outlined" color="primary" fullWidth>
             Sair
           </Button>
         </Box>

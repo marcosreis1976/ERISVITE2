@@ -1,6 +1,6 @@
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
-import React from 'react';
+import React, { useState } from 'react';
 import { Box, Grid } from '@mui/material';
 import PageContainer from 'src/components/container/PageContainer';
 
@@ -16,21 +16,24 @@ import SellingProducts from 'src/components/dashboards/modern/SellingProducts';
 import WeeklyStats from 'src/components/dashboards/modern/WeeklyStats';
 import TopPerformers from 'src/components/dashboards/modern/TopPerformers';
 import Welcome from 'src/layouts/full/shared/welcome/Welcome';
-
+import * as AuthService from "src/services/auth.service";
 const Modern = () => {
+
+  const [user, setUser] = useState(AuthService.getCurrentUser());
+
   return (
     <PageContainer title="Modern Dashboard" description="this is Modern Dashboard page">
       <Box>
-        <Grid container spacing={3}>
-          {/* column */}
+        {/* <Grid container spacing={3}>
+   
           <Grid item xs={12} lg={12}>
             <TopCards />
           </Grid>
-          {/* column */}
+   
           <Grid item xs={12} lg={8}>
             <RevenueUpdates />
           </Grid>
-          {/* column */}
+   
           <Grid item xs={12} lg={4}>
             <Grid container spacing={3}>
               <Grid item xs={12} sm={6} lg={12}>
@@ -41,11 +44,11 @@ const Modern = () => {
               </Grid>
             </Grid>
           </Grid>
-          {/* column */}
+   
           <Grid item xs={12} lg={4}>
             <EmployeeSalary />
           </Grid>
-          {/* column */}
+   
           <Grid item xs={12} lg={4}>
             <Grid container spacing={3}>
               <Grid item xs={12} sm={6}>
@@ -59,21 +62,21 @@ const Modern = () => {
               </Grid>
             </Grid>
           </Grid>
-          {/* column */}
+   
           <Grid item xs={12} lg={4}>
             <SellingProducts />
           </Grid>
-          {/* column */}
+   
           <Grid item xs={12} lg={4}>
             <WeeklyStats />
           </Grid>
-          {/* column */}
+   
           <Grid item xs={12} lg={8}>
             <TopPerformers />
           </Grid> 
-        </Grid>
-        {/* column */}
-        <Welcome color='white' type='info' title='Éris' subtitle='Bem vindo ao sistema'/>
+        </Grid> */}
+ 
+        <Welcome color='white' type='info' title={user.userName} subtitle='Bem vindo ao sistema'/>
       </Box>
     </PageContainer>
   );

@@ -5,17 +5,28 @@ import { IconPower } from '@tabler/icons-react';
 import { AppState } from 'src/store/Store';
 import { Link } from 'react-router-dom';
 import { getUserLocalStorage } from "src/context/autoProvider/auth";
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
+import { useNavigate } from "react-router";
+import * as AuthService from "src/services/auth.service";
+
+
 export const Profile = () => {
+  const navigate = useNavigate();
   const customizer = useSelector((state: AppState) => state.customizer);
   const lgUp = useMediaQuery((theme: any) => theme.breakpoints.up('lg'));
   const hideMenu = lgUp ? customizer.isCollapse && !customizer.isSidebarHover : '';
+  const [user, setUser] = useState(AuthService.getCurrentUser());
 
   useEffect(() => {
 
     getUserLocalStorage();
   
   });
+
+  const logout = () =>{
+    AuthService.logout()
+    navigate("/auth/login");
+  }
 
   return (
     <Box
@@ -32,15 +43,14 @@ export const Profile = () => {
           <Avatar alt="Remy Sharp" src={img1} />
 
           <Box>
-            <Typography variant="h6">Mathew </Typography>
-            <Typography variant="caption">Designer</Typography>
+            <Typography variant="h6">{user.userName} </Typography>
+            {/* <Typography variant="caption">Designer</Typography> */}
           </Box>
           <Box sx={{ ml: 'auto' }}>
             <Tooltip title="Logout" placement="top">
               <IconButton
                 color="primary"
-                component={Link}
-                to="auth/login"
+                onClick={()=>logout()} 
                 aria-label="logout"
                 size="small"
               >

@@ -2,6 +2,7 @@ import axios from "axios";
 
 import { API_URL } from '../constants/global'
 import { UserType } from "../types/auth/auth";
+import { useNavigate } from "react-router";
 
 
 
@@ -32,10 +33,13 @@ export const login = (userName: string, password: string, filialUsuario: any) =>
 
       return response.data;
     });
-};
+}; 
 
 export const logout = () => {
+
   localStorage.removeItem("user");
+ 
+
 };
 
 export const getCurrentUser = () => {
@@ -43,4 +47,4 @@ export const getCurrentUser = () => {
   if (userStr) return JSON.parse(userStr);
 
   return null;
-};
+}; 

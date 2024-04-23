@@ -254,7 +254,7 @@ const AuthLogin = () => {
           label="Me lembrar"
         />
       </FormGroup>
-      <Typography
+      {/* <Typography
         component={Link}
         to="/auth/forgot-password"
         fontWeight="500"
@@ -264,7 +264,7 @@ const AuthLogin = () => {
         }}
       >
         Perdeu senha?
-      </Typography>
+      </Typography> */}
     </Stack>
   </Stack>
   <Box>
@@ -280,7 +280,7 @@ const AuthLogin = () => {
   </Box>
   </form>
 
-<SubTitle />
+{/* <SubTitle /> */}
   </>
   )
 };

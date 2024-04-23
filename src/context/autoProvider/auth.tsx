@@ -10,8 +10,7 @@ export const setUserLocalStorage = (user: IUser | null) =>{
 export const getUserLocalStorage = () =>{
 
     const json = localStorage.getItem("u");
-    // const json = sessionStorage.getItem("u");
-    console.log(json)
+
     if (!json) {
         return null
     }

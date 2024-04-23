@@ -65,10 +65,10 @@ const Notifications = () => {
         }}
       >
         <Stack direction="row" py={2} px={4} justifyContent="space-between" alignItems="center">
-          <Typography variant="h6">Notifications</Typography>
-          <Chip label="5 new" color="primary" size="small" />
+          <Typography variant="h6">Notificações</Typography>
+          <Chip label="0" color="primary" size="small" />
         </Stack>
-        <Scrollbar sx={{ height: '385px' }}>
+        {/* <Scrollbar sx={{ height: '385px' }}>
           {dropdownData.notifications.map((notification, index) => (
             <Box key={index}>
               <MenuItem sx={{ py: 2, px: 4 }}>
@@ -108,10 +108,10 @@ const Notifications = () => {
               </MenuItem>
             </Box>
           ))}
-        </Scrollbar>
+        </Scrollbar> */}
         <Box p={3} pb={1}>
-          <Button to="/apps/email" variant="outlined" component={Link} color="primary" fullWidth>
-            See all Notifications
+          <Button to="/apps/email" disabled variant="outlined" component={Link} color="primary" fullWidth>
+            Ver todas as notificações
           </Button>
         </Box>
       </Menu>

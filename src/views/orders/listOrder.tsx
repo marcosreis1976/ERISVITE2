@@ -3,7 +3,7 @@
 import * as React from 'react';
 import { forwardRef, useCallback, useContext, useEffect, useState } from "react";
 import { styled, useTheme } from '@mui/material/styles';
-import { IconTrash, IconSearch, IconEraser } from '@tabler/icons-react';
+import { IconTrash, IconSearch, IconRefresh } from '@tabler/icons-react';
 import * as yup from "yup";
 import {
   Typography,
@@ -131,7 +131,7 @@ const BCrumb = [
     title: 'Home',
   },
   {
-    title: 'Lista de Pedidos',
+    title: 'Painel de Pedidos',
   },
 ];
 
@@ -149,6 +149,7 @@ const ListOrder = () => {
   const [nameEstoque, setNameEstoque] = useState<any>(-1);
   const [nameCliente, setNameCliente] = useState<any>('');
   const [namePedido, setNamePedido] = useState<any>('');
+  const [namePedidoWeb, setNamePedidoWeb] = useState<any>('');
   const [nameDataInicial, setNameDataInicial] = useState<any>('');
   const [nameDataFinal, setNameDataFinal] = useState<any>('');
   const [currentPage, setCurrentPage] = useState(1);
@@ -158,6 +159,10 @@ const ListOrder = () => {
   const [listSummary, setListSummary] = useState([]);
   const [pageFull, setPageFull] = useState(false);
   const [statusPendente, setStatusPendente] = useState(0);
+  const [statusErro, setStatusErro] = useState(0);
+  const [statusSeparado, setStatusSeparado] = useState(0);
+  const [statusLiberado, setStatusLiberado] = useState(0);
+  const [statusEtiqueta, setStatusEtiqueta] = useState(0);
 
   const [affiliated, setAffiliated] = useState([]);
   const [sellers, setSellers] = useState([]);
@@ -227,6 +232,15 @@ const ListOrder = () => {
                     console.log(response)
                     let resp = response.data.filter((val:any)=>val.statusNome == 'Pendente')
                     setStatusPendente(resp[0]['statusRegistros'])
+                    let resp2 = response.data.filter((val:any)=>val.statusNome == 'Erro Autorização')
+                    setStatusErro(resp2[0]['statusRegistros'])
+                    let resp3 = response.data.filter((val:any)=>val.statusNome == 'Em Separação')
+                    setStatusSeparado(resp3[0]['statusRegistros'])
+                    let resp4 = response.data.filter((val:any)=>val.statusNome == 'Liberado Expedição')
+                    setStatusLiberado(resp4[0]['statusRegistros'])
+                    let resp5 = response.data.filter((val:any)=>val.statusNome == 'Liberado Expedição')
+                    setStatusEtiqueta(resp5[0]['statusRegistros'])
+                    
                     setListSummary(response.data)
 
   
@@ -305,6 +319,10 @@ const ListOrder = () => {
     setNamePedido(event.target.value);
   };
 
+  const handleChangePedidoWeb = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setNamePedidoWeb(event.target.value);
+  }
+
   const handleChangeDataInicial = (event: React.ChangeEvent<HTMLInputElement>) => {
     setNameDataInicial(event.target.value);
   };
@@ -334,10 +352,10 @@ const ListOrder = () => {
     nameStatuss >= 0 ? parameter = parameter + `&statusPainel=${nameStatuss}` : null
     nameEstoque >= 0 ? parameter = parameter + `&statusEstoque=${nameEstoque}` : null
     nameCliente != '' ? parameter = parameter + `&cliente=${nameCliente}` : null
-    // pedido != '' ? parameter = parameter + `&pedido=${formValue.pedido}` : null
-    // pedidoWeb != '' ? parameter = parameter + `&pedidoWeb=${formValue.pedidoWeb}` : null
-    // dataInicial != '' ? parameter = parameter + `&dataInicial=${formValue.dataInicial}` : null
-    // dataFinal != '' ? parameter = parameter + `&dataFinal=${formValue.dataFinal}` : null
+    namePedido != '' ? parameter = parameter + `&pedido=${namePedido}` : null
+    namePedidoWeb != '' ? parameter = parameter + `&pedidoWeb=${namePedidoWeb}` : null
+    nameDataInicial != '' ? parameter = parameter + `&dataInicial=${nameDataInicial}` : null
+    nameDataFinal != '' ? parameter = parameter + `&dataFinal=${nameDataFinal}` : null
 
      setParameter(parameter)
 
@@ -384,6 +402,36 @@ const ListOrder = () => {
 
   };
 
+  const reload = () =>{
+    getListSummary(answer.user.filialUsuario, answer.user.userName).then(
+      (response)=>{
+        console.log(response)
+        let resp = response.data.filter((val:any)=>val.statusNome == 'Pendente')
+        setStatusPendente(resp[0]['statusRegistros'])
+        let resp2 = response.data.filter((val:any)=>val.statusNome == 'Erro Autorização')
+        setStatusErro(resp2[0]['statusRegistros'])
+        let resp3 = response.data.filter((val:any)=>val.statusNome == 'Em Separação')
+        setStatusSeparado(resp3[0]['statusRegistros'])
+        let resp4 = response.data.filter((val:any)=>val.statusNome == 'Liberado Expedição')
+        setStatusLiberado(resp4[0]['statusRegistros'])
+        let resp5 = response.data.filter((val:any)=>val.statusNome == 'Liberado Expedição')
+        setStatusEtiqueta(resp5[0]['statusRegistros'])
+        
+        setListSummary(response.data)
+
+
+        // setPage(true)
+        setSearch(false)
+      },
+      (error) => {
+    const _content =
+      (error.response && error.response.data) ||
+      error.message ||
+      error.toString();
+  }
+    )
+  }
+
   const handlePageChange = (newPage:any) => {
     setErros(false)
     setSearch(true)
@@ -424,8 +472,17 @@ const ListOrder = () => {
   };
 
   const clean = () =>{
-    // setPage(false)
-    // setPage(true)
+    setNameFilial(-1);
+    setNameVendedor(-1);
+    setNameTransportador(-1);
+    setNamePedidos(false);
+    setNameStatuss(-1);
+    setNameEstoque(-1);
+    setNameCliente('');
+    setNamePedido('');
+    setNamePedidoWeb('');
+    setNameDataInicial('');
+    setNameDataFinal('');
      setTimeout(() => {
       //  setPage(true)
      }, 10);
@@ -457,7 +514,7 @@ const ListOrder = () => {
     : null}
  
 
-    <PageContainer title="Lista de Pedidos" description="this is Pagination Table page">
+    <PageContainer title="Painel de Pedidos" description="this is Pagination Table page">
       {/* breadcrumb */}
       {/* <Breadcrumb title="Pagination Table" items={BCrumb} /> */}
       {/* end breadcrumb */}
@@ -562,9 +619,9 @@ const ListOrder = () => {
     </Grid>
 
     <Grid item xs={12} sm={1} style={{position: 'relative', top: '45px', textAlign: 'center'}}>
-    <Tooltip title="Send">
-        <Fab color="primary" >
-          <IconEraser width={20} />
+    <Tooltip title="Carregar">
+        <Fab color="primary" onClick={()=>reload()}>
+          <IconRefresh width={20} />
         </Fab>
       </Tooltip>
 
@@ -572,7 +629,7 @@ const ListOrder = () => {
     </Grid>
 
     <Grid item xs={12} sm={1} style={{position: 'relative', top: '45px', textAlign:'center'}}>
-    <Tooltip title="Send" onClick={()=> clean()}>
+    <Tooltip title="Apagar" onClick={()=> clean()}>
         <Fab color="error" >
           <IconTrash width={20} />
         </Fab>
@@ -608,36 +665,33 @@ const ListOrder = () => {
 </Grid>
 <Grid item xs={12} lg={2}>
                 <CustomFormLabel htmlFor="standard-select-currency">Cliente</CustomFormLabel>
-                <CustomTextField id="password" onChange={handleChangeCliente} type="text" variant="outlined" fullWidth
+                <CustomTextField id="password" value={nameCliente} onChange={handleChangeCliente} type="text" variant="outlined" fullWidth
       
       />
                 </Grid>
                 <Grid item xs={12} lg={1}>
                 <CustomFormLabel htmlFor="standard-select-currency">Pedido</CustomFormLabel>
-                <CustomTextField id="password" onChange={handleChangePedido} type="text" variant="outlined" fullWidth
+                <CustomTextField id="password" value={namePedido} onChange={handleChangePedido} type="text" variant="outlined" fullWidth
       
       />
                 </Grid>
                 <Grid item xs={12} lg={1}>
                 <CustomFormLabel style={{fontSize: '10pt'}} htmlFor="standard-select-currency">Pedido Web</CustomFormLabel>
-                <CustomTextField id="password" onChange={handleChangePedido} type="text" variant="outlined" fullWidth
+                <CustomTextField id="password" value={namePedidoWeb} onChange={handleChangePedidoWeb} type="text" variant="outlined" fullWidth
       
       />
                 </Grid>
                 <Grid item xs={12} lg={1}>
                 <CustomFormLabel htmlFor="standard-select-currency">Data Inicial</CustomFormLabel>
-                <CustomTextField id="password" type="text" onChange={handleChangeDataFinal} variant="outlined" fullWidth
+                <CustomTextField id="password" type="text" value={nameDataInicial} onChange={handleChangeDataInicial} variant="outlined" fullWidth
       
       />
                 </Grid>
 
                 <Grid item xs={12} lg={1}>
                 <CustomFormLabel htmlFor="standard-select-currency">Data Final</CustomFormLabel>
-                <CustomTextField InputProps={{
-                  
-        inputComponent: ForwardedInputMask,
-      }} variant="outlined" fullWidth
-      
+                <CustomTextField  variant="outlined" fullWidth
+      value={nameDataFinal} onChange={handleChangeDataFinal}
       />
                 </Grid>
 
