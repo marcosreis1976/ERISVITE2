@@ -1,4 +1,4 @@
-import { useMediaQuery, Box, Drawer, useTheme } from '@mui/material';
+import { useMediaQuery, Box, Drawer, useTheme, Avatar, } from '@mui/material';
 import SidebarItems from './SidebarItems';
 import Logo from '../../shared/logo/Logo';
 import { useSelector, useDispatch } from 'src/store/Store';
@@ -6,6 +6,7 @@ import { hoverSidebar, toggleMobileSidebar } from 'src/store/customizer/Customiz
 import Scrollbar from 'src/components/custom-scroll/Scrollbar';
 import { Profile } from './SidebarProfile/Profile';
 import { AppState } from 'src/store/Store';
+import img1 from 'src/assets/images/backgrounds/ErisTransparente.png';
 
 const Sidebar = () => {
   const lgUp = useMediaQuery((theme: any) => theme.breakpoints.up('lg'));
@@ -68,8 +69,9 @@ const Sidebar = () => {
             {/* ------------------------------------------- */}
             {/* Logo */}
             {/* ------------------------------------------- */}
-            <Box px={3}>
-              <Logo />
+            <Box px={3}> 
+              {/* <Logo /> */}
+              <img src={img1}  style={{top: '10px', width: '150px', position: 'relative'}} />
             </Box>
             <Scrollbar sx={{ height: 'calc(100% - 190px)' }}>
               {/* ------------------------------------------- */}
