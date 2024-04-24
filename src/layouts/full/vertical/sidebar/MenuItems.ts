@@ -70,17 +70,11 @@ const Menuitems: MenuitemsType[] = [
     navlabel: true,
     subheader: 'Home',
   },
-   {
-     id: uniqueId(),
-     title: 'Dashboard',
-     icon: IconAperture,
-     href: '/dashboards/modern',
-     chipColor: 'secondary',
-   },
+ 
    {
     id: uniqueId(),
-    title: 'Pedidos',
-    icon: IconBoxMultiple,
+    title: 'Dashboard',
+    icon: IconAperture,
     href: '/menulevel/',
     children: [
       {

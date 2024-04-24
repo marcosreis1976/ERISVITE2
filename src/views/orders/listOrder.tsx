@@ -28,7 +28,8 @@ import {
   Tooltip,
   TableContainer,
   Stack,
-  Fab
+  Fab,
+  Pagination
 } from '@mui/material';
 import Welcome from 'src/layouts/full/shared/welcome/Welcome';
 import FirstPageIcon from '@mui/icons-material/FirstPage';
@@ -145,8 +146,8 @@ const ListOrder = () => {
   const [nameVendedor, setNameVendedor] = useState<any>(-1);
   const [nameTransportador, setNameTransportador] = useState<any>(-1);
   const [namePedidos, setNamePedidos] = useState<any>(false);
-  const [nameStatuss, setNameStatuss] = useState<any>(-1);
-  const [nameEstoque, setNameEstoque] = useState<any>(-1);
+  const [nameStatuss, setNameStatuss] = useState<any>('');
+  const [nameEstoque, setNameEstoque] = useState<any>('');
   const [nameCliente, setNameCliente] = useState<any>('');
   const [namePedido, setNamePedido] = useState<any>('');
   const [namePedidoWeb, setNamePedidoWeb] = useState<any>('');
@@ -230,15 +231,19 @@ const ListOrder = () => {
                 getListSummary(answer.user.filialUsuario, answer.user.userName).then(
                   (response)=>{
                     console.log(response)
+
+          
+
                     let resp = response.data.filter((val:any)=>val.statusNome == 'Pendente')
                     setStatusPendente(resp[0]['statusRegistros'])
                     let resp2 = response.data.filter((val:any)=>val.statusNome == 'Erro Autorização')
+                    console.log(resp2)
                     setStatusErro(resp2[0]['statusRegistros'])
                     let resp3 = response.data.filter((val:any)=>val.statusNome == 'Em Separação')
                     setStatusSeparado(resp3[0]['statusRegistros'])
                     let resp4 = response.data.filter((val:any)=>val.statusNome == 'Liberado Expedição')
                     setStatusLiberado(resp4[0]['statusRegistros'])
-                    let resp5 = response.data.filter((val:any)=>val.statusNome == 'Liberado Expedição')
+                    let resp5 = response.data.filter((val:any)=>val.statusNome == 'Etiqueta Liberada')
                     setStatusEtiqueta(resp5[0]['statusRegistros'])
                     
                     setListSummary(response.data)
@@ -333,7 +338,7 @@ const ListOrder = () => {
 
 
   const handleSearch = () => {
-    setError(false)
+ 
     console.log(nameFilial)
     if (nameFilial == -1){
       setError(true)
@@ -346,10 +351,11 @@ const ListOrder = () => {
      let parameter = `codigoFilial=${nameFilial}`
 
 
+     console.log(nameEstoque)
     nameVendedor >= 0 ? parameter = parameter + `&codigoVendedor=${nameVendedor}` : null
     nameTransportador >= 0 ? parameter = parameter + `&codigoTransportadora=${nameTransportador}`: null
     namePedidos != false ? parameter = parameter + `&soPedidosInternet=${1}` : parameter = parameter + `&soPedidosInternet=${0}`
-    nameStatuss >= 0 ? parameter = parameter + `&statusPainel=${nameStatuss}` : null
+    nameStatuss >= '' ? parameter = parameter + `&statusPainel=${nameStatuss}` : null
     nameEstoque >= 0 ? parameter = parameter + `&statusEstoque=${nameEstoque}` : null
     nameCliente != '' ? parameter = parameter + `&cliente=${nameCliente}` : null
     namePedido != '' ? parameter = parameter + `&pedido=${namePedido}` : null
@@ -357,9 +363,10 @@ const ListOrder = () => {
     nameDataInicial != '' ? parameter = parameter + `&dataInicial=${nameDataInicial}` : null
     nameDataFinal != '' ? parameter = parameter + `&dataFinal=${nameDataFinal}` : null
 
+    console.log(nameStatuss)
      setParameter(parameter)
 
-     parameter = parameter + `&numeroPagina=1&usuario=${dataPage.user?.userName}`
+     parameter = parameter + `&numeroPagina=1&tamanhoPagina=10&usuario=${dataPage.user?.userName}`
 
      getOrderPanel(parameter).then(
        (response) => {
@@ -374,7 +381,6 @@ const ListOrder = () => {
            let data = `${day}/${month}/${year} ${hours}`
            value.datahoraCadastro = data
          })
-
 
          setValueTable(response.data)
          setAmount(response.data[0].totalRegistros)
@@ -432,7 +438,8 @@ const ListOrder = () => {
     )
   }
 
-  const handlePageChange = (newPage:any) => {
+  const handlePageChange = (event: React.ChangeEvent<unknown>, value: number) => {
+    let newPage = value
     setErros(false)
     setSearch(true)
     setCurrentPage(newPage);
@@ -503,8 +510,61 @@ const ListOrder = () => {
     )
   }
 
-  const validation = () =>{
-    console.log('oi')
+
+  const clickStatus = (name:any) =>{
+
+    if (nameFilial == -1){
+      setError(true)
+      return
+    }
+    setErros(false)
+    setSearch(true)
+    setCurrentPage(1)
+    
+     let parameter = `codigoFilial=${nameFilial}&statusPainel=${name}`
+
+      setParameter(parameter)
+
+      parameter = parameter + `&numeroPagina=1&tamanhoPagina=10&usuario=${dataPage.user?.userName}`
+
+      getOrderPanel(parameter).then(
+        (response) => {
+         console.log(response.data);
+          response.data.map((value:any)=>{
+            let year =value.datahoraCadastro.substring(0, 4);
+            let month =value.datahoraCadastro.substring(5, 7);
+            let day =value.datahoraCadastro.substring(8, 10);
+
+            let hours = value.datahoraCadastro.substring(11, 16);
+
+            let data = `${day}/${month}/${year} ${hours}`
+            value.datahoraCadastro = data
+          })
+
+          console.log(response.data)
+          setValueTable(response.data)
+          setAmount(response.data[0].totalRegistros)
+          setSearch(false)
+          setErros(false)
+
+          setTotalPages(Math.ceil(response.data[0].totalRegistros / 10));
+          const startIndex = (currentPage - 1) * 10;
+          const endIndex = startIndex + 10;
+          const currentItems = response.data.slice(startIndex, endIndex);
+          refresh()
+         },
+        (error) => {
+          const _content =
+            (error.response && error.response.data) ||
+            error.message ||
+            error.toString();
+            setValueTable([])
+            setSearch(false)
+            setErros(true)
+            setErrorMessage('Nenhum registro encontrado!')
+
+        }
+      );
   }
 
   return (
@@ -561,7 +621,7 @@ const ListOrder = () => {
                     </CustomSelect>
                     </Grid>
                     <Grid item xs={12} sm={2}>
-                <CustomFormLabel htmlFor="standard-select-currency">Transportador</CustomFormLabel>
+                <CustomFormLabel htmlFor="standard-select-currency">Transportadora</CustomFormLabel>
                 <CustomSelect
                       value={nameTransportador}
                       onChange={handleChangetransportador}
@@ -600,7 +660,7 @@ const ListOrder = () => {
                     >
                 <MenuItem value="-1">{nameStatus[3]}</MenuItem>
                       {requests.map((option:any) => (
-                        <MenuItem key={option.codigoTerceiro} value={option.codigoTerceiro}>
+                        <MenuItem key={option.codigoTerceiro} value={option.nomeTerceiro}>
                           {option.nomeTerceiro}
                         </MenuItem>
                       ))}
@@ -629,7 +689,7 @@ const ListOrder = () => {
     </Grid>
 
     <Grid item xs={12} sm={1} style={{position: 'relative', top: '45px', textAlign:'center'}}>
-    <Tooltip title="Apagar" onClick={()=> clean()}>
+    <Tooltip title="Limpar" onClick={()=> clean()}>
         <Fab color="error" >
           <IconTrash width={20} />
         </Fab>
@@ -657,7 +717,7 @@ const ListOrder = () => {
     >
       <MenuItem value="-1">{nameStatus[4]}</MenuItem>
       {stocks.map((option:any) => (
-        <MenuItem key={option.codigoTerceiro} value={option.nomeTerceiro}>
+        <MenuItem key={option.codigoTerceiro} value={option.codigoTerceiro}>
           {option.nomeTerceiro}
         </MenuItem>
       ))}
@@ -697,20 +757,23 @@ const ListOrder = () => {
 
                 <Grid item xs={12} sm={1} style={{position: 'relative', top: '45px'}} >
                 <BoxStyled
+
 // onClick={() => dispatch(setVisibilityFilter('Open'))}
 sx={{ backgroundColor: 'success.light', color: 'success.main' }}
+onClick={()=>clickStatus('Liberado Expedição')}
 >
-<Typography style={{fontSize: '8pt', textAlign: 'center', width: '100%'}}>Expedição</Typography>
-<Typography style={{fontSize: '8pt', textAlign: 'center'}}>0</Typography>
+<Typography style={{fontSize: '9pt', textAlign: 'center', width: '100%', fontWeight: 600}}>Expedição</Typography>
+<Typography style={{fontSize: '12pt', textAlign: 'center',fontWeight: 600}}>{statusLiberado}</Typography>
 </BoxStyled>   
 </Grid>
 <Grid item xs={12} sm={1} style={{position: 'relative', top: '45px'}}>
 <BoxStyled
 // onClick={() => dispatch(setVisibilityFilter('Open'))}
 sx={{ backgroundColor: 'secondary.light', color: 'secondary.main' }}
+onClick={()=>clickStatus('Etiqueta Liberada')}
 >
-<Typography style={{fontSize: '8pt', textAlign: 'center', width: '100%'}}>Etiquetas</Typography>
-<Typography style={{fontSize: '8pt', textAlign: 'center'}}>0</Typography>
+<Typography style={{fontSize: '9pt', textAlign: 'center', width: '100%', fontWeight: 600}}>Etiquetas</Typography>
+<Typography style={{fontSize: '12pt', textAlign: 'center', fontWeight: 600}}>{statusEtiqueta}</Typography>
 </BoxStyled> 
              
               </Grid> 
@@ -718,11 +781,12 @@ sx={{ backgroundColor: 'secondary.light', color: 'secondary.main' }}
 
 <BoxStyled
 // onClick={() => dispatch(setVisibilityFilter('Open'))}
+onClick={()=>clickStatus('Pendente')}
 sx={{ backgroundColor: 'warning.light', color: 'warning.main' }}
 >
-<Typography style={{fontSize: '8pt', textAlign: 'center'}}>Pendente</Typography>
+<Typography style={{fontSize: '9pt', textAlign: 'center', fontWeight: 600}}>Pendente</Typography>
 
-<Typography style={{fontSize: '8pt', textAlign: 'center'}}>{statusPendente}</Typography>
+<Typography style={{fontSize: '12pt', textAlign: 'center', fontWeight: 600}}>{statusPendente}</Typography>
 </BoxStyled>
 
 </Grid>
@@ -730,10 +794,11 @@ sx={{ backgroundColor: 'warning.light', color: 'warning.main' }}
 
 <BoxStyled
 // onClick={() => dispatch(setVisibilityFilter('Open'))}
+onClick={()=>clickStatus('Erro Autorização')}
 sx={{ backgroundColor: 'error.light', color: 'error.main' }}
 >
-<Typography style={{fontSize: '8pt', textAlign: 'center', width: '100%'}}>Erro</Typography>
-<Typography style={{fontSize: '8pt', textAlign: 'center'}}>0</Typography>
+<Typography style={{fontSize: '9pt', textAlign: 'center', width: '100%', fontWeight: 600}}>Erro</Typography>
+<Typography style={{fontSize: '12pt', textAlign: 'center', fontWeight: 600}}>{statusErro}</Typography>
 </BoxStyled>      
  </Grid>
 
@@ -741,10 +806,11 @@ sx={{ backgroundColor: 'error.light', color: 'error.main' }}
 
 <BoxStyled
 // onClick={() => dispatch(setVisibilityFilter('Open'))}
+onClick={()=>clickStatus('Em Separação')}
 sx={{ backgroundColor: 'primary.light', color: 'primary.main' }}
 >
-<Typography style={{fontSize: '8pt', textAlign: 'center', width: '100%'}}>Separação</Typography>
-<Typography style={{fontSize: '8pt', textAlign: 'center'}}>0</Typography>
+<Typography style={{fontSize: '9pt', textAlign: 'center', width: '100%', fontWeight: 600}}>Separação</Typography>
+<Typography style={{fontSize: '12pt', textAlign: 'center', fontWeight: 600}}>{statusSeparado}</Typography>
 </BoxStyled>      
 </Grid>
     
@@ -777,6 +843,7 @@ sx={{ backgroundColor: 'primary.light', color: 'primary.main' }}
          <BlankCard>
           <TableContainer>
           {valueTable.length > 0  ?
+            <>
             <Table
               aria-label="custom pagination table"
               sx={{
@@ -823,10 +890,7 @@ sx={{ backgroundColor: 'primary.light', color: 'primary.main' }}
                 </TableRow>
               </TableHead>
               <TableBody>
-              {(rowsPerPage > 0
-              ? valueTable.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-              : valueTable
-              ).map((response:any, i) => (
+              {valueTable.map((response:any, i) => (
                   <TableRow key={i}>
                     <TableCell>
                       <Typography style={{fontSize: '8pt', textAlign: 'center'}}>{response.filial}</Typography>
@@ -904,7 +968,15 @@ sx={{ backgroundColor: 'primary.light', color: 'primary.main' }}
                 )} */}
               </TableBody> 
               <TableFooter>
-                <TableRow> 
+                {/* <TableRow> 
+                {valueTable.map((row) => (
+                
+                <TableCell scope="row">
+                  <Typography variant="subtitle1" color="textPrimary" fontWeight={600}>
+                    
+                  </Typography>
+                </TableCell>
+                ))}
                 <TablePagination
                     rowsPerPageOptions={[5, 10, 25, { label: 'All', value: -1 }]}
                     colSpan={6}
@@ -917,10 +989,13 @@ sx={{ backgroundColor: 'primary.light', color: 'primary.main' }}
                     onPageChange={handleChangePage}
                     onRowsPerPageChange={handleChangeRowsPerPage}
                     ActionsComponent={TablePaginationActions}
-                  />
-                </TableRow>
+                  /> 
+                </TableRow> */}
               </TableFooter> 
             </Table>
+            <Pagination style={{position: 'relative', top: '2px', marginBottom: '10px'}} count={totalPages} page={page} onChange={handlePageChange} color="primary" />
+        
+            </>
             : null}
           </TableContainer>
         </BlankCard>  

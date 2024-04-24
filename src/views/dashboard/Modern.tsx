@@ -22,7 +22,7 @@ const Modern = () => {
   const [user, setUser] = useState(AuthService.getCurrentUser());
 
   return (
-    <PageContainer title="Modern Dashboard" description="this is Modern Dashboard page">
+    <PageContainer title="Eris" description="this is Modern Dashboard page">
       <Box>
         {/* <Grid container spacing={3}>
    
