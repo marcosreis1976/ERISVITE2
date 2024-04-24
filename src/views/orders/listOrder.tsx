@@ -3,7 +3,7 @@
 import * as React from 'react';
 import { forwardRef, useCallback, useContext, useEffect, useState } from "react";
 import { styled, useTheme } from '@mui/material/styles';
-import { IconTrash, IconSearch, IconRefresh } from '@tabler/icons-react';
+import { IconEraser, IconSearch, IconRefresh } from '@tabler/icons-react';
 import * as yup from "yup";
 import {
   Typography,
@@ -170,7 +170,7 @@ const ListOrder = () => {
   const [transporters, setTransporters] = useState([]);
   const [requests, setRequest] = useState([]);
   const [stocks, setStocks] = useState([]);
-  const [nameStatus, setNameStatus] = useState(['Sem Filial', 'Sem Vendedor', 'Sem Transportador', 'Sem Status', 'Sem Estoque'])
+  const [nameStatus, setNameStatus] = useState(['Sem Filial', 'Sem Vendedor', 'Sem Transportadora', 'Sem Status', 'Sem Estoque'])
   const [valueTable, setValueTable] = useState([]);
   const [search, setSearch] = useState(true)
   const [page, setPage] = useState(0);
@@ -350,8 +350,6 @@ const ListOrder = () => {
     
      let parameter = `codigoFilial=${nameFilial}`
 
-
-     console.log(nameEstoque)
     nameVendedor >= 0 ? parameter = parameter + `&codigoVendedor=${nameVendedor}` : null
     nameTransportador >= 0 ? parameter = parameter + `&codigoTransportadora=${nameTransportador}`: null
     namePedidos != false ? parameter = parameter + `&soPedidosInternet=${1}` : parameter = parameter + `&soPedidosInternet=${0}`
@@ -691,7 +689,7 @@ const ListOrder = () => {
     <Grid item xs={12} sm={1} style={{position: 'relative', top: '45px', textAlign:'center'}}>
     <Tooltip title="Limpar" onClick={()=> clean()}>
         <Fab color="error" >
-          <IconTrash width={20} />
+          <IconEraser width={20} />
         </Fab>
       </Tooltip>
     </Grid>
