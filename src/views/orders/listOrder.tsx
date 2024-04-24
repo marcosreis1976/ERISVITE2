@@ -418,7 +418,7 @@ const ListOrder = () => {
         setStatusSeparado(resp3[0]['statusRegistros'])
         let resp4 = response.data.filter((val:any)=>val.statusNome == 'Liberado Expedição')
         setStatusLiberado(resp4[0]['statusRegistros'])
-        let resp5 = response.data.filter((val:any)=>val.statusNome == 'Liberado Expedição')
+        let resp5 = response.data.filter((val:any)=>val.statusNome == 'Etiqueta Liberada')
         setStatusEtiqueta(resp5[0]['statusRegistros'])
         
         setListSummary(response.data)
