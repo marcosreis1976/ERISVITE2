@@ -1,4 +1,4 @@
-import { IconButton, Box, AppBar, useMediaQuery, Toolbar, styled, Stack } from '@mui/material';
+import { IconButton, Box, AppBar, useMediaQuery, Toolbar, styled, Stack, Alert } from '@mui/material';
 
 import { useSelector, useDispatch } from 'src/store/Store';
 import { toggleSidebar, toggleMobileSidebar } from 'src/store/customizer/CustomizerSlice';
@@ -25,6 +25,7 @@ const Header = () => {
     if(location.pathname == '/pedidos/listapedidos'){
       setPage('Painel de Pedidos')
     }
+
   });
 
 
@@ -51,6 +52,7 @@ const Header = () => {
     fontWeight: '600',
     border: 'solid 1px black',
     borderRadius: '10px',
+    height: '80%',
     backgroundColor: '#6099CF',
   }));
   return (
@@ -67,7 +69,12 @@ const Header = () => {
         >
           <IconMenu2 size="20" />
         </IconButton>
-        <LetterStyled>{page}</LetterStyled> 
+        {page != '' ?
+        <Alert variant="filled" icon={false}  severity="info">
+        {page}
+                </Alert>
+                : null}
+        {/* <LetterStyled>{page}</LetterStyled>  */}
         {/* ------------------------------------------- */}
         {/* Search Dropdown */}
         {/* ------------------------------------------- */}
