@@ -11,10 +11,22 @@ import Language from './Language';
 import { AppState } from 'src/store/Store';
 import Navigation from './Navigation';
 import MobileRightSidebar from './MobileRightSidebar';
+import { useLocation } from 'react-router-dom';
+import { useEffect, useState } from 'react';
 
 const Header = () => {
   const lgUp = useMediaQuery((theme: any) => theme.breakpoints.up('lg'));
   const lgDown = useMediaQuery((theme: any) => theme.breakpoints.down('lg'));
+  let location = useLocation();
+  const [page, setPage] = useState('');
+
+
+  useEffect(() => {
+    if(location.pathname == '/pedidos/listapedidos'){
+      setPage('Painel de Pedidos')
+    }
+  });
+
 
   // drawer
   const customizer = useSelector((state: AppState) => state.customizer);
@@ -31,11 +43,19 @@ const Header = () => {
   }));
   const ToolbarStyled = styled(Toolbar)(({ theme }) => ({
     width: '100%',
-    color: theme.palette.text.secondary,
-  }));
 
+  }));
+  const LetterStyled = styled(Toolbar)(({ theme }) => ({
+    width: '20%',
+    color: 'white',
+    fontWeight: '600',
+    border: 'solid 1px black',
+    borderRadius: '10px',
+    backgroundColor: '#6099CF',
+  }));
   return (
     <AppBarStyled position="sticky" color="default">
+    
       <ToolbarStyled>
         {/* ------------------------------------------- */}
         {/* Toggle Button Sidebar */}
@@ -47,7 +67,7 @@ const Header = () => {
         >
           <IconMenu2 size="20" />
         </IconButton>
-
+        <LetterStyled>{page}</LetterStyled> 
         {/* ------------------------------------------- */}
         {/* Search Dropdown */}
         {/* ------------------------------------------- */}

@@ -364,7 +364,7 @@ const ListOrder = () => {
     console.log(nameStatuss)
      setParameter(parameter)
 
-     parameter = parameter + `&numeroPagina=1&tamanhoPagina=10&usuario=${dataPage.user?.userName}`
+     parameter = parameter + `&numeroPagina=1&tamanhoPagina=7&usuario=${dataPage.user?.userName}`
 
      getOrderPanel(parameter).then(
        (response) => {
@@ -523,7 +523,7 @@ const ListOrder = () => {
 
       setParameter(parameter)
 
-      parameter = parameter + `&numeroPagina=1&tamanhoPagina=10&usuario=${dataPage.user?.userName}`
+      parameter = parameter + `&numeroPagina=1&tamanhoPagina=7&usuario=${dataPage.user?.userName}`
 
       getOrderPanel(parameter).then(
         (response) => {
@@ -571,7 +571,6 @@ const ListOrder = () => {
       <Welcome color='white' type='warning' title='Atenção' subtitle='Filial é obrigatório!'/>
     : null}
  
-
     <PageContainer title="Painel de Pedidos" description="this is Pagination Table page">
       {/* breadcrumb */}
       {/* <Breadcrumb title="Pagination Table" items={BCrumb} /> */}
@@ -991,7 +990,7 @@ sx={{ backgroundColor: 'primary.light', color: 'primary.main' }}
                 </TableRow> */}
               </TableFooter> 
             </Table>
-            <Pagination style={{position: 'relative', top: '2px', marginBottom: '10px'}} count={totalPages} page={page} onChange={handlePageChange} color="primary" />
+            <Pagination style={{position: 'relative', top: '2px', marginBottom: '10px'}}  count={totalPages} page={page} onChange={handlePageChange} color="primary" />
         
             </>
             : null}
