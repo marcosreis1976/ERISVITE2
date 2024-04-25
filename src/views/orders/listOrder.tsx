@@ -511,6 +511,7 @@ const ListOrder = () => {
 
   const clickStatus = (name:any) =>{
 
+    console.log(name)
     if (nameFilial == -1){
       setError(true)
       return
@@ -759,7 +760,7 @@ const ListOrder = () => {
 
 // onClick={() => dispatch(setVisibilityFilter('Open'))}
 sx={{ backgroundColor: 'success.light', color: 'success.main' }}
-onClick={()=>clickStatus('Liberado Expedição')}
+onClick={()=>clickStatus('Liberado para Expedição')}
 >
 <Typography style={{fontSize: '9pt', textAlign: 'center', width: '100%', fontWeight: 600}}>Expedição</Typography>
 <Typography style={{fontSize: '12pt', textAlign: 'center',fontWeight: 600}}>{statusLiberado}</Typography>
