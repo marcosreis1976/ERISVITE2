@@ -1,4 +1,4 @@
-import { IconButton, Box, AppBar, useMediaQuery, Toolbar, styled, Stack, Alert } from '@mui/material';
+import { IconButton, Box, AppBar, useMediaQuery, Toolbar, styled, Stack, Alert, Button, Chip } from '@mui/material';
 
 import { useSelector, useDispatch } from 'src/store/Store';
 import { toggleSidebar, toggleMobileSidebar } from 'src/store/customizer/CustomizerSlice';
@@ -13,6 +13,8 @@ import Navigation from './Navigation';
 import MobileRightSidebar from './MobileRightSidebar';
 import { useLocation } from 'react-router-dom';
 import { useEffect, useState } from 'react';
+
+
 
 const Header = () => {
   const lgUp = useMediaQuery((theme: any) => theme.breakpoints.up('lg'));
@@ -55,6 +57,8 @@ const Header = () => {
     height: '80%',
     backgroundColor: '#6099CF',
   }));
+
+
   return (
     <AppBarStyled position="sticky" color="default">
     
@@ -63,16 +67,18 @@ const Header = () => {
         {/* Toggle Button Sidebar */}
         {/* ------------------------------------------- */}
         <IconButton
-          color="inherit"
+          color="inherit" 
           aria-label="menu"
           onClick={lgUp ? () => dispatch(toggleSidebar()) : () => dispatch(toggleMobileSidebar())}
         >
           <IconMenu2 size="20" />
         </IconButton>
         {page != '' ?
-        <Alert variant="filled" icon={false}  severity="info">
-        {page}
-                </Alert>
+    //  variant="contained"  color="primary"
+         <Button  style={{ width: '46%', borderRadius: '20px'}}  variant="contained"  color="primary" >
+         <span style={{ marginLeft: '-70%', position: 'relative', fontWeight: '600'}}>{page}</span>
+       </Button>
+        // {page}
                 : null}
         {/* <LetterStyled>{page}</LetterStyled>  */}
         {/* ------------------------------------------- */}

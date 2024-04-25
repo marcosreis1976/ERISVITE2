@@ -385,7 +385,7 @@ const ListOrder = () => {
          setSearch(false)
          setErros(false)
 
-         setTotalPages(Math.ceil(response.data[0].totalRegistros / 10));
+         setTotalPages(Math.ceil(response.data[0].totalRegistros / 7));
          const startIndex = (currentPage - 1) * 10;
          const endIndex = startIndex + 10;
          const currentItems = response.data.slice(startIndex, endIndex);
@@ -442,7 +442,7 @@ const ListOrder = () => {
     setSearch(true)
     setCurrentPage(newPage);
 
-    let answer = parameter + `&numeroPagina=${newPage}&tamanhoPagina=10&usuario=${dataPage.user?.userName}`
+    let answer = parameter + `&numeroPagina=${newPage}&tamanhoPagina=7&usuario=${dataPage.user?.userName}`
     getOrderPanel(answer).then(
       (response) => {
         response.data.map((value:any)=>{
@@ -457,7 +457,7 @@ const ListOrder = () => {
         setAmount(response.data[0].totalRegistros)
         setSearch(false)
         setErros(false)
-        setTotalPages(Math.ceil(response.data[0].totalRegistros / 10));
+        setTotalPages(Math.ceil(response.data[0].totalRegistros / 7));
         const startIndex = (currentPage - 1) * 10;
         const endIndex = startIndex + 10;
         const currentItems = response.data.slice(startIndex, endIndex);
@@ -545,7 +545,7 @@ const ListOrder = () => {
           setSearch(false)
           setErros(false)
 
-          setTotalPages(Math.ceil(response.data[0].totalRegistros / 10));
+          setTotalPages(Math.ceil(response.data[0].totalRegistros / 7));
           const startIndex = (currentPage - 1) * 10;
           const endIndex = startIndex + 10;
           const currentItems = response.data.slice(startIndex, endIndex);
@@ -571,14 +571,16 @@ const ListOrder = () => {
       <Welcome color='white' type='warning' title='Atenção' subtitle='Filial é obrigatório!'/>
     : null}
  
-    <PageContainer title="Painel de Pedidos" description="this is Pagination Table page">
+    <PageContainer title="Painel de Pedidos"  description="">
       {/* breadcrumb */}
       {/* <Breadcrumb title="Pagination Table" items={BCrumb} /> */}
       {/* end breadcrumb */}
  
-    
+
+
+
  
-      <Grid item xs={12} sm={8}>
+      <Grid item xs={12} sm={8} style={{marginBottom: '-20px'}}>
 
       <Box>
       <Grid container spacing={1} style={{position: 'relative', top: '-30px'}}>
@@ -848,40 +850,40 @@ sx={{ backgroundColor: 'primary.light', color: 'primary.main' }}
               }}
             >
               <TableHead>
-                <TableRow>
+                <TableRow style={{backgroundColor: '#5D87FF', borderRadius: '20px'}}>
 
                 <TableCell>
-                    <Typography style={{fontSize: '8pt', fontWeight: '600', textAlign: 'center'}}>FILIAL</Typography>
+                    <Typography style={{fontSize: '9pt', fontWeight: '600', textAlign: 'center',}}>FILIAL</Typography>
                   </TableCell>
       <TableCell>
-                    <Typography style={{fontSize: '8pt', fontWeight: '600', textAlign: 'center'}}>Nº DA NOTA</Typography>
+                    <Typography style={{fontSize: '9pt', fontWeight: '600', textAlign: 'center',}}>Nº DA NOTA</Typography>
                   </TableCell>
       <TableCell>
-                    <Typography style={{fontSize: '8pt', fontWeight: '600', textAlign: 'center'}}>PEDIDO</Typography>
+                    <Typography style={{fontSize: '9pt', fontWeight: '600', textAlign: 'center',}}>PEDIDO</Typography>
                   </TableCell>
       <TableCell>
-                    <Typography style={{fontSize: '8pt', fontWeight: '600', textAlign: 'center'}}>DATA/HORA CADASTRO</Typography>
+                    <Typography style={{fontSize: '9pt', fontWeight: '600', textAlign: 'center',}}>DATA/HORA CADASTRO</Typography>
                   </TableCell>
       <TableCell>
-                    <Typography style={{fontSize: '8pt', fontWeight: '600', textAlign: 'center'}}>PEDIDO WEB</Typography>
+                    <Typography style={{fontSize: '9pt', fontWeight: '600', textAlign: 'center',}}>PEDIDO WEB</Typography>
                   </TableCell>
       <TableCell>
-                    <Typography style={{fontSize: '8pt', fontWeight: '600', textAlign: 'center'}}>CLIENTE</Typography>
+                    <Typography style={{fontSize: '9pt', fontWeight: '600', textAlign: 'center',}}>CLIENTE</Typography>
                   </TableCell>
       <TableCell>
-                    <Typography style={{fontSize: '8pt', fontWeight: '600', textAlign: 'center'}}>VENDEDOR</Typography>
+                    <Typography style={{fontSize: '9pt', fontWeight: '600', textAlign: 'center',}}>VENDEDOR</Typography>
                   </TableCell>
       <TableCell>
-                    <Typography style={{fontSize: '8pt', fontWeight: '600', textAlign: 'center'}}>TRANSPORTADORA</Typography>
+                    <Typography style={{fontSize: '9pt', fontWeight: '600', textAlign: 'center',}}>TRANSPORTADORA</Typography>
                   </TableCell>
       <TableCell>
-                    <Typography style={{fontSize: '8pt', fontWeight: '600', textAlign: 'center'}}>STATUS</Typography>
+                    <Typography style={{fontSize: '9pt', fontWeight: '600', textAlign: 'center',}}>STATUS</Typography>
                   </TableCell>
       <TableCell>
-                    <Typography style={{fontSize: '8pt', fontWeight: '600', textAlign: 'center'}}>ESTOQUE</Typography>
+                    <Typography style={{fontSize: '9pt', fontWeight: '600', textAlign: 'center',}}>ESTOQUE</Typography>
                   </TableCell>
       <TableCell>
-                    <Typography style={{fontSize: '8pt', fontWeight: '600', textAlign: 'center'}}>VALOR TOTAL</Typography>
+                    <Typography style={{fontSize: '9pt', fontWeight: '600', textAlign: 'center',}}>VALOR TOTAL</Typography>
                   </TableCell>
           
                 </TableRow>
