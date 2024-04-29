@@ -2,7 +2,6 @@ import axios from "axios";
 
 import { API_URL } from '../constants/global'
 import { UserType } from "../types/auth/auth";
-import { useNavigate } from "react-router";
 
 
 

@@ -1,13 +1,9 @@
-import { IconButton, Box, AppBar, useMediaQuery, Toolbar, styled, Stack, Alert, Button, Chip } from '@mui/material';
-
+import { IconButton, Box, AppBar, useMediaQuery, Toolbar, styled, Stack, Button } from '@mui/material';
 import { useSelector, useDispatch } from 'src/store/Store';
 import { toggleSidebar, toggleMobileSidebar } from 'src/store/customizer/CustomizerSlice';
 import { IconMenu2 } from '@tabler/icons-react';
 import Notifications from './Notification';
 import Profile from './Profile';
-import Cart from './Cart';
-import Search from './Search';
-import Language from './Language';
 import { AppState } from 'src/store/Store';
 import Navigation from './Navigation';
 import MobileRightSidebar from './MobileRightSidebar';
@@ -44,19 +40,11 @@ const Header = () => {
       minHeight: customizer.TopbarHeight,
     },
   }));
-  const ToolbarStyled = styled(Toolbar)(({ theme }) => ({
+  const ToolbarStyled = styled(Toolbar)(() => ({
     width: '100%',
 
   }));
-  const LetterStyled = styled(Toolbar)(({ theme }) => ({
-    width: '20%',
-    color: 'white',
-    fontWeight: '600',
-    border: 'solid 1px black',
-    borderRadius: '10px',
-    height: '80%',
-    backgroundColor: '#6099CF',
-  }));
+
 
 
   return (

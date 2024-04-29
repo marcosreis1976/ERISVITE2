@@ -1,7 +1,6 @@
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
 import {
   Box,
   Menu,
@@ -12,12 +11,8 @@ import {
   IconButton,
   Stack
 } from '@mui/material';
-import * as dropdownData from './data';
-
-import { IconMail } from '@tabler/icons-react';
 
 import ProfileImg from 'src/assets/images/profile/user-1.jpg';
-import unlimitedImg from 'src/assets/images/backgrounds/unlimited-bg.png';
 import { getUserLocalStorage } from "src/context/autoProvider/auth";
 import * as AuthService from "../../../../services/auth.service";
 import axios from "axios";
@@ -28,7 +23,7 @@ import { useNavigate } from "react-router";
 const Profile = () => {
   const navigate = useNavigate();
   const [anchorEl2, setAnchorEl2] = useState(null);
-  const [user, setUser] = useState(AuthService.getCurrentUser());
+  const [user] = useState(AuthService.getCurrentUser());
   const handleClick2 = (event: any) => {
     setAnchorEl2(event.currentTarget);
   };
@@ -48,8 +43,7 @@ const Profile = () => {
 
      api.interceptors.request.use(
      (config) => {
-         const user = getUserLocalStorage();
-
+        
 
          return config;
      },

@@ -1,4 +1,4 @@
-import { useMediaQuery, Box, Drawer, useTheme, Avatar, } from '@mui/material';
+import { useMediaQuery, Box, Drawer, useTheme } from '@mui/material';
 import SidebarItems from './SidebarItems';
 import Logo from '../../shared/logo/Logo';
 import { useSelector, useDispatch } from 'src/store/Store';

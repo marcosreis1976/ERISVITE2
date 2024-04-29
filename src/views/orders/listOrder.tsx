@@ -1,147 +1,127 @@
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 import * as React from 'react';
-import { forwardRef, useCallback, useContext, useEffect, useState } from "react";
-import { styled, useTheme } from '@mui/material/styles';
+import { useContext, useEffect, useState } from "react";
+import { styled } from '@mui/material/styles';
 import { IconEraser, IconSearch, IconRefresh } from '@tabler/icons-react';
-import * as yup from "yup";
 import {
   Typography,
   TableHead,
-  Avatar,
-  Chip,
   Box,
-  Button,
-  TextField,
-  FormLabel,
   Grid,
   Table,
   TableBody,
   TableCell,
-  TablePagination,
   TableRow,
   TableFooter,
-  IconButton,
   MenuItem,
-  Checkbox,
   FormControlLabel,
   Tooltip,
   TableContainer,
-  Stack,
   Fab,
   Pagination
 } from '@mui/material';
 import Welcome from 'src/layouts/full/shared/welcome/Welcome';
-import FirstPageIcon from '@mui/icons-material/FirstPage';
-import KeyboardArrowLeft from '@mui/icons-material/KeyboardArrowLeft';
-import KeyboardArrowRight from '@mui/icons-material/KeyboardArrowRight';
-import LastPageIcon from '@mui/icons-material/LastPage';
 import CustomCheckbox from '../../components/forms/theme-elements/CustomCheckbox';
 import CustomTextField from '../../components/forms/theme-elements/CustomTextField';
 import CustomFormLabel from '../../components/forms/theme-elements/CustomFormLabel';
 import CustomSelect from '../../components/forms/theme-elements/CustomSelect';
 import PageContainer from 'src/components/container/PageContainer';
-import { useFormik } from 'formik';
-import img1 from 'src/assets/images/profile/user-1.jpg';
-import img2 from 'src/assets/images/profile/user-2.jpg';
-import img3 from 'src/assets/images/profile/user-3.jpg';
-import img4 from 'src/assets/images/profile/user-4.jpg';
-import img5 from 'src/assets/images/profile/user-5.jpg';
 import {CartContext} from "src/App";
-import { UserType } from 'src/types/auth/auth';
+// import { UserType } from 'src/types/auth/auth';
 
 import {getAffiliated, getListSellers, getListTransporters, itensRequest, itensStock, getOrderPanel, getListSummary} from "../../services/user.service"
 import BlankCard from 'src/components/shared/BlankCard';
 
-import { InputMask, type InputMaskProps } from '@react-input/mask';
+// import { InputMask, type InputMaskProps } from '@react-input/mask';
 
-interface TablePaginationActionsProps {
-  count: number;
-  page: number;
-  rowsPerPage: number;
-  onPageChange: (event: React.MouseEvent<HTMLButtonElement>, newPage: number) => void;
-}
-
-
-
-function TablePaginationActions(props: TablePaginationActionsProps) {
-  const theme = useTheme();
-  const { count, page, rowsPerPage, onPageChange } = props;
-
-  const handleFirstPageButtonClick = (event: any) => {
-    onPageChange(event, 0);
-  };
-
-  const handleBackButtonClick = (event: any) => {
-    onPageChange(event, page - 1);
-  };
-
-  const handleNextButtonClick = (event: any) => {
-    onPageChange(event, page + 1);
-  };
-
-  const handleLastPageButtonClick = (event: any) => {
-    onPageChange(event, Math.max(0, Math.ceil(count / rowsPerPage) - 1));
-  };
-
-  return (
-    <Box sx={{ flexShrink: 0, ml: 2.5 }}>
-      <IconButton
-        onClick={handleFirstPageButtonClick}
-        disabled={page === 0}
-        aria-label="first page"
-      >
-        {theme.direction === 'rtl' ? <LastPageIcon /> : <FirstPageIcon />}
-      </IconButton>
-      <IconButton onClick={handleBackButtonClick} disabled={page === 0} aria-label="previous page">
-        {theme.direction === 'rtl' ? <KeyboardArrowRight /> : <KeyboardArrowLeft />}
-      </IconButton>
-      <IconButton
-        onClick={handleNextButtonClick}
-        disabled={page >= Math.ceil(count / rowsPerPage) - 1}
-        aria-label="next page"
-      >
-        {theme.direction === 'rtl' ? <KeyboardArrowLeft /> : <KeyboardArrowRight />}
-      </IconButton>
-      <IconButton
-        onClick={handleLastPageButtonClick}
-        disabled={page >= Math.ceil(count / rowsPerPage) - 1}
-        aria-label="last page"
-      >
-        {theme.direction === 'rtl' ? <FirstPageIcon /> : <LastPageIcon />}
-      </IconButton>
-    </Box>
-  );
-}
+// interface TablePaginationActionsProps {
+//   count: number;
+//   page: number;
+//   rowsPerPage: number;
+//   onPageChange: (event: React.MouseEvent<HTMLButtonElement>, newPage: number) => void;
+// }
 
 
-interface OrderType {
-  orderno: string;
-  items: string;
-  imgsrc: any;
-  customer: string;
-  total: string;
-  status: string;
-  date: string;
-}
+
+// function TablePaginationActions(props: TablePaginationActionsProps) {
+//   const theme = useTheme();
+//   const { count, page, rowsPerPage, onPageChange } = props;
+
+//   const handleFirstPageButtonClick = (event: any) => {
+//     onPageChange(event, 0);
+//   };
+
+//   const handleBackButtonClick = (event: any) => {
+//     onPageChange(event, page - 1);
+//   };
+
+//   const handleNextButtonClick = (event: any) => {
+//     onPageChange(event, page + 1);
+//   };
+
+//   const handleLastPageButtonClick = (event: any) => {
+//     onPageChange(event, Math.max(0, Math.ceil(count / rowsPerPage) - 1));
+//   };
+
+//   return (
+//     <Box sx={{ flexShrink: 0, ml: 2.5 }}>
+//       <IconButton
+//         onClick={handleFirstPageButtonClick}
+//         disabled={page === 0}
+//         aria-label="first page"
+//       >
+//         {theme.direction === 'rtl' ? <LastPageIcon /> : <FirstPageIcon />}
+//       </IconButton>
+//       <IconButton onClick={handleBackButtonClick} disabled={page === 0} aria-label="previous page">
+//         {theme.direction === 'rtl' ? <KeyboardArrowRight /> : <KeyboardArrowLeft />}
+//       </IconButton>
+//       <IconButton
+//         onClick={handleNextButtonClick}
+//         disabled={page >= Math.ceil(count / rowsPerPage) - 1}
+//         aria-label="next page"
+//       >
+//         {theme.direction === 'rtl' ? <KeyboardArrowLeft /> : <KeyboardArrowRight />}
+//       </IconButton>
+//       <IconButton
+//         onClick={handleLastPageButtonClick}
+//         disabled={page >= Math.ceil(count / rowsPerPage) - 1}
+//         aria-label="last page"
+//       >
+//         {theme.direction === 'rtl' ? <FirstPageIcon /> : <LastPageIcon />}
+//       </IconButton>
+//     </Box>
+//   );
+// }
 
 
-const BCrumb = [
-  {
-    to: '/',
-    title: 'Home',
-  },
-  {
-    title: 'Painel de Pedidos',
-  },
-];
+// interface OrderType {
+//   orderno: string;
+//   items: string;
+//   imgsrc: any;
+//   customer: string;
+//   total: string;
+//   status: string;
+//   date: string;
+// }
+
+
+// const BCrumb = [
+//   {
+//     to: '/',
+//     title: 'Home',
+//   },
+//   {
+//     title: 'Painel de Pedidos',
+//   },
+// ];
 
 const ListOrder = () => {
   let answer = useContext(CartContext)
-  const [dataPage, setDataPage] = useState(answer);
-  const [rowsPerPage, setRowsPerPage] = useState(5);
+  const [dataPage] = useState(answer);
+  // const [rowsPerPage, setRowsPerPage] = useState(5);
 
-  const [filialUsuario, setFilialUsuario] = useState(0);
+  // const [filialUsuario, setFilialUsuario] = useState(0);
   const [nameFilial, setNameFilial] = useState<any>(-1);
   const [nameVendedor, setNameVendedor] = useState<any>(-1);
   const [nameTransportador, setNameTransportador] = useState<any>(-1);
@@ -153,12 +133,12 @@ const ListOrder = () => {
   const [namePedidoWeb, setNamePedidoWeb] = useState<any>('');
   const [nameDataInicial, setNameDataInicial] = useState<any>('');
   const [nameDataFinal, setNameDataFinal] = useState<any>('');
-  const [currentPage, setCurrentPage] = useState(1);
+  // const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
   const [parameter, setParameter] = useState('');
-  const [showOption, setShowOption] = useState(false);
-  const [listSummary, setListSummary] = useState([]);
-  const [pageFull, setPageFull] = useState(false);
+  // const [showOption, setShowOption] = useState(false);
+  // const [listSummary, setListSummary] = useState([]);
+  // const [pageFull, setPageFull] = useState(false);
   const [statusPendente, setStatusPendente] = useState(0);
   const [statusErro, setStatusErro] = useState(0);
   const [statusSeparado, setStatusSeparado] = useState(0);
@@ -170,9 +150,9 @@ const ListOrder = () => {
   const [transporters, setTransporters] = useState([]);
   const [requests, setRequest] = useState([]);
   const [stocks, setStocks] = useState([]);
-  const [nameStatus, setNameStatus] = useState(['Sem Filial', 'Sem Vendedor', 'Sem Transportadora', 'Sem Status', 'Sem Estoque'])
+  const [nameStatus] = useState(['Sem Filial', 'Sem Vendedor', 'Sem Transportadora', 'Sem Status', 'Sem Estoque'])
   const [valueTable, setValueTable] = useState([]);
-  const [search, setSearch] = useState(true)
+  // const [search, setSearch] = useState(true)
   const [page, setPage] = useState(0);
 
   const [error, setError] = useState(false);
@@ -188,27 +168,27 @@ const ListOrder = () => {
   }));
 
   
-  const [errors, setErros] = useState(false)
-  const [errorMessage, setErrorMessage] = useState('')
-  const [user, setUser] = useState<UserType>()
-  const [amount, setAmount] = useState(0)
-  const [opened, setOpened] = useState(false)
+  // const [errors, setErros] = useState(false)
+  // const [errorMessage, setErrorMessage] = useState('')
+  // const [user, setUser] = useState<UserType>()
+  // const [amount, setAmount] = useState(0)
+  // const [opened, setOpened] = useState(false)
   // const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - rows.length) : 0;
  
 
-  const ForwardedInputMask = forwardRef<HTMLInputElement, InputMaskProps>((props:any, forwardedRef) => {
-    return <InputMask ref={forwardedRef} mask=""  {...props} />;
-  });
+  // const ForwardedInputMask = forwardRef<HTMLInputElement, InputMaskProps>((props:any, forwardedRef) => {
+  //   return <InputMask ref={forwardedRef} mask=""  {...props} />;
+  // });
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   // @ts-ignore
   const handleChangePage = (event: any, newPage: any) => {
     setPage(newPage);
   };
 
-  const handleChangeRowsPerPage = (event: any,) => {
-    setRowsPerPage(parseInt(event.target.value, 10));
-    setPage(0);
-  };
+  // const handleChangeRowsPerPage = (event: any,) => {
+  //   setRowsPerPage(parseInt(event.target.value, 10));
+  //   setPage(0);
+  // };
 
   useEffect(() => {
 
@@ -246,44 +226,44 @@ const ListOrder = () => {
                     let resp5 = response.data.filter((val:any)=>val.statusNome == 'Etiqueta Liberada')
                     setStatusEtiqueta(resp5[0]['statusRegistros'])
                     
-                    setListSummary(response.data)
+                    // setListSummary(response.data)
 
   
                     // setPage(true)
-                    setSearch(false)
+                    // setSearch(false)
                   },
-                  (error) => {
-                const _content =
-                  (error.response && error.response.data) ||
-                  error.message ||
-                  error.toString();
-              }
+              //     (error) => {
+              //   const _content =
+              //     (error.response && error.response.data) ||
+              //     error.message ||
+              //     error.toString();
+              // }
                 )
               },
-              (error) => {
-                const _content =
-                  (error.response && error.response.data) ||
-                  error.message ||
-                  error.toString();
-              }
+              // (error) => {
+              //   const _content =
+              //     (error.response && error.response.data) ||
+              //     error.message ||
+              //     error.toString();
+              // }
             );
 
           },
-          (error) => {
-            const _content =
-              (error.response && error.response.data) ||
-              error.message ||
-              error.toString();
-          }
+          // (error) => {
+          //   const _content =
+          //     (error.response && error.response.data) ||
+          //     error.message ||
+          //     error.toString();
+          // }
         );
 
       },
-      (error) => {
-        const _content =
-          (error.response && error.response.data) ||
-          error.message ||
-          error.toString();
-      }
+      // (error) => {
+      //   const _content =
+      //     (error.response && error.response.data) ||
+      //     error.message ||
+      //     error.toString();
+      // }
     );
    
   }, []);
@@ -304,7 +284,7 @@ const ListOrder = () => {
     setNameTransportador(event.target.value);
   };
 
-  const handleChangePedidos = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChangePedidos = () => {
     setNamePedidos(!namePedidos)
  };
 
@@ -344,9 +324,9 @@ const ListOrder = () => {
       setError(true)
       return
     }
-    setErros(false)
-    setSearch(true)
-    setCurrentPage(1)
+    // setErros(false)
+    // setSearch(true)
+    // setCurrentPage(1)
     
      let parameter = `codigoFilial=${nameFilial}`
 
@@ -381,27 +361,27 @@ const ListOrder = () => {
          })
 
          setValueTable(response.data)
-         setAmount(response.data[0].totalRegistros)
-         setSearch(false)
-         setErros(false)
+        //  setAmount(response.data[0].totalRegistros)
+        //  setSearch(false)
+        //  setErros(false)
 
          setTotalPages(Math.ceil(response.data[0].totalRegistros / 7));
-         const startIndex = (currentPage - 1) * 10;
-         const endIndex = startIndex + 10;
-         const currentItems = response.data.slice(startIndex, endIndex);
-         refresh()
+        //  const startIndex = (currentPage - 1) * 10;
+        //  const endIndex = startIndex + 10;
+        //  const currentItems = response.data.slice(startIndex, endIndex);
+        reload()
         },
-       (error) => {
-         const _content =
-           (error.response && error.response.data) ||
-           error.message ||
-           error.toString();
-           setValueTable([])
-           setSearch(false)
-           setErros(true)
-           setErrorMessage('Nenhum registro encontrado!')
+      //  (error) => {
+      //    const _content =
+      //      (error.response && error.response.data) ||
+      //      error.message ||
+      //      error.toString();
+      //      setValueTable([])
+      //     //  setSearch(false)
+      //     //  setErros(true)
+      //     //  setErrorMessage('Nenhum registro encontrado!')
 
-       }
+      //  }
      );
 
   };
@@ -421,26 +401,27 @@ const ListOrder = () => {
         let resp5 = response.data.filter((val:any)=>val.statusNome == 'Etiqueta Liberada')
         setStatusEtiqueta(resp5[0]['statusRegistros'])
         
-        setListSummary(response.data)
+        // setListSummary(response.data)
 
 
         // setPage(true)
-        setSearch(false)
+        // setSearch(false)
       },
-      (error) => {
-    const _content =
-      (error.response && error.response.data) ||
-      error.message ||
-      error.toString();
-  }
+  //     (error) => {
+  //   const _content =
+  //     (error.response && error.response.data) ||
+  //     error.message ||
+  //     error.toString();
+  // }
     )
   }
 
   const handlePageChange = (event: React.ChangeEvent<unknown>, value: number) => {
     let newPage = value
-    setErros(false)
-    setSearch(true)
-    setCurrentPage(newPage);
+    event;
+    // setErros(false)
+    // setSearch(true)
+    // setCurrentPage(newPage);
 
     let answer = parameter + `&numeroPagina=${newPage}&tamanhoPagina=7&usuario=${dataPage.user?.userName}`
     getOrderPanel(answer).then(
@@ -454,25 +435,25 @@ const ListOrder = () => {
           value.datahoraCadastro = data
         })
         setValueTable(response.data)
-        setAmount(response.data[0].totalRegistros)
-        setSearch(false)
-        setErros(false)
+        // setAmount(response.data[0].totalRegistros)
+        // setSearch(false)
+        // setErros(false)
         setTotalPages(Math.ceil(response.data[0].totalRegistros / 7));
-        const startIndex = (currentPage - 1) * 10;
-        const endIndex = startIndex + 10;
-        const currentItems = response.data.slice(startIndex, endIndex);
+        // const startIndex = (currentPage - 1) * 10;
+        // const endIndex = startIndex + 10;
+        // const currentItems = response.data.slice(startIndex, endIndex);
        },
-      (error) => {
-        const _content =
-          (error.response && error.response.data) ||
-          error.message ||
-          error.toString();
-          setValueTable([])
-          setSearch(false)
-          setErros(true)
-          setErrorMessage('Nenhum registro encontrado!')
+      // (error) => {
+      //   const _content =
+      //     (error.response && error.response.data) ||
+      //     error.message ||
+      //     error.toString();
+      //     setValueTable([])
+      //     setSearch(false)
+      //     setErros(true)
+      //     setErrorMessage('Nenhum registro encontrado!')
 
-      }
+      // }
     );
   };
 
@@ -493,20 +474,20 @@ const ListOrder = () => {
      }, 10);
   }
 
-  const refresh = () =>{
-    getListSummary(answer.user.filialUsuario, answer.user.userName).then(
-      (response)=>{
-        setListSummary(response.data)
-        // setPage(true)
-      },
-      (error) => {
-    const _content =
-      (error.response && error.response.data) ||
-      error.message ||
-      error.toString();
-  }
-    )
-  }
+  // const refresh = () =>{
+  //   getListSummary(answer.user.filialUsuario, answer.user.userName).then(
+  //     (response)=>{
+  //       setListSummary(response.data)
+  //       // setPage(true)
+  //     },
+  //     (error) => {
+  //   const _content =
+  //     (error.response && error.response.data) ||
+  //     error.message ||
+  //     error.toString();
+  // }
+  //   )
+  // }
 
 
   const clickStatus = (name:any) =>{
@@ -516,9 +497,9 @@ const ListOrder = () => {
       setError(true)
       return
     }
-    setErros(false)
-    setSearch(true)
-    setCurrentPage(1)
+    // setErros(false)
+    // setSearch(true)
+    // setCurrentPage(1)
     
      let parameter = `codigoFilial=${nameFilial}&statusPainel=${name}`
 
@@ -542,27 +523,27 @@ const ListOrder = () => {
 
           console.log(response.data)
           setValueTable(response.data)
-          setAmount(response.data[0].totalRegistros)
-          setSearch(false)
-          setErros(false)
+          // setAmount(response.data[0].totalRegistros)
+          // setSearch(false)
+          // setErros(false)
 
           setTotalPages(Math.ceil(response.data[0].totalRegistros / 7));
-          const startIndex = (currentPage - 1) * 10;
-          const endIndex = startIndex + 10;
-          const currentItems = response.data.slice(startIndex, endIndex);
-          refresh()
+          // const startIndex = (currentPage - 1) * 10;
+          // const endIndex = startIndex + 10;
+          // const currentItems = response.data.slice(startIndex, endIndex);
+          // refresh()
          },
-        (error) => {
-          const _content =
-            (error.response && error.response.data) ||
-            error.message ||
-            error.toString();
-            setValueTable([])
-            setSearch(false)
-            setErros(true)
-            setErrorMessage('Nenhum registro encontrado!')
+        // (error) => {
+          // const _content =
+          //   (error.response && error.response.data) ||
+          //   error.message ||
+          //   error.toString();
+          //   setValueTable([])
+          //   setSearch(false)
+          //   setErros(true)
+          //   setErrorMessage('Nenhum registro encontrado!')
 
-        }
+        // }
       );
   }
 

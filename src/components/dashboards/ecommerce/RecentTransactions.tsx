@@ -30,8 +30,7 @@ const RecentTransactions = () => {
               flex: 0.5,
               paddingLeft: 0,
             },
-          }}
-        >
+          }} placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}        >
           <TimelineItem>
             <TimelineOppositeContent>09:30 am</TimelineOppositeContent>
             <TimelineSeparator>

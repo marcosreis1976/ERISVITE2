@@ -6,15 +6,12 @@ import {
   Box,
   Badge,
   Menu,
-  MenuItem,
-  Avatar,
   Typography,
   Button,
   Chip,
   Stack
 } from '@mui/material';
-import * as dropdownData from './data';
-import Scrollbar from 'src/components/custom-scroll/Scrollbar';
+
 
 import { IconBellRinging } from '@tabler/icons-react';
 import { Link } from 'react-router-dom';

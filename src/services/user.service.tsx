@@ -1,13 +1,9 @@
-import React, { useState, useEffect } from 'react';
+
 import axios from "axios";
-import { createContext } from "react";
+
 // import {authHeader, userData} from "../auth/auth-header";
-import {authHeader, userData} from "../auth/auth-header";
+import { userData} from "../auth/auth-header";
 import { API_URL } from '../constants/global'
-
-
-const user:any = localStorage.getItem("user");
-
 
 
 
@@ -46,14 +42,6 @@ export const itensRequest:any = [{codigoTerceiro: 0, nomeTerceiro: 'Pendente'}, 
 
 export const itensStock:any = [{codigoTerceiro: 0, nomeTerceiro: 'Sem Reserva'}, 
 {codigoTerceiro: 1, nomeTerceiro: '100% Reservado'}, {codigoTerceiro: 3, nomeTerceiro: 'Parcialmente Reservado'}]
-
-
-
-let title = 'nome'
-
-const updateTitle = (value:any) =>{
-title = value
-}
 
  export const values ={
   page: 1,

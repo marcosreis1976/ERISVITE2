@@ -1,15 +1,15 @@
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 import React from 'react';
-import { Link } from 'react-router-dom';
-import { Grid, Box, Card, Stack, Typography } from '@mui/material';
+
+import { Grid, Box, Card} from '@mui/material';
 
 
 
 // components
 import PageContainer from 'src/components/container/PageContainer';
 import Logo from 'src/layouts/full/shared/logo/Logo';
-import AuthLogin from '../authForms/AuthLogin';
+
 
 const Login2 = () => {
   
@@ -45,7 +45,7 @@ const Login2 = () => {
               <Box display="flex" alignItems="center" justifyContent="center">
                 <Logo />
               </Box>
-              <AuthLogin
+              {/* <AuthLogin
                 subtitle={
                   <Stack direction="row" spacing={1} justifyContent="center" mt={3}>
                     <Typography color="textSecondary" variant="h6" fontWeight="500">
@@ -64,7 +64,7 @@ const Login2 = () => {
                     </Typography>
                   </Stack>
                 }
-              />
+              /> */}
             </Card>
           </Grid>
         </Grid>

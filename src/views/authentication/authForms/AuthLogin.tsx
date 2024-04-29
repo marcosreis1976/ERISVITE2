@@ -8,21 +8,16 @@ import {
   FormControlLabel,
   Button,
   Stack,
-  Divider,
   MenuItem
 } from '@mui/material';
-import { Link } from 'react-router-dom';
 import * as yup from 'yup';
-import { loginType } from 'src/types/auth/auth';
 import CustomCheckbox from '../../../components/forms/theme-elements/CustomCheckbox';
 import CustomTextField from '../../../components/forms/theme-elements/CustomTextField';
 import CustomFormLabel from '../../../components/forms/theme-elements/CustomFormLabel';
 import CustomSelect from '../../../components/forms/theme-elements/CustomSelect';
-import AuthSocialButtons from './AuthSocialButtons';
 import { useNavigate } from 'react-router-dom';
 import {getAffiliated} from "../../../services/user.service"
 import { useFormik } from 'formik';
-import * as Yup from "yup";
 import Welcome from 'src/layouts/full/shared/welcome/Welcome';
 import { login } from "../../../services/auth.service"
 // title="Bem vindo ao Eris"
@@ -33,27 +28,27 @@ import { login } from "../../../services/auth.service"
 // //   </Typography>
 // // }
 
-const SubTitle = () =>{
+// const SubTitle = () =>{
 
-  return (
-  <Stack direction="row" spacing={1} mt={3}>
-       <Typography color="textSecondary" variant="h6" fontWeight="500">
-         Novo na Eris?
-       </Typography>
-       <Typography
-         component={Link}
-         to="/auth/register"
-         fontWeight="500"
-         sx={{
-           textDecoration: 'none',
-           color: 'primary.main',
-         }}
-       >
-         Criar sua conta
-       </Typography>
-     </Stack>
-  )
-}
+//   return (
+//   <Stack direction="row" spacing={1} mt={3}>
+//        <Typography color="textSecondary" variant="h6" fontWeight="500">
+//          Novo na Eris?
+//        </Typography>
+//        <Typography
+//          component={Link}
+//          to="/auth/register"
+//          fontWeight="500"
+//          sx={{
+//            textDecoration: 'none',
+//            color: 'primary.main',
+//          }}
+//        >
+//          Criar sua conta
+//        </Typography>
+//      </Stack>
+//   )
+// }
 
 // subtitle={
 //   <Stack direction="row" spacing={1} mt={3}>
@@ -79,19 +74,14 @@ const SubTitle = () =>{
 
 const AuthLogin = () => {
   const navigate = useNavigate();
-  const [filialUsuario, setFilialUsuario] = useState(0);
+  // const [filialUsuario, setFilialUsuario] = useState(0);
   const [nameFilial, setNameFilial] = useState<string>("");
-  const [userName, setUserName] = useState("");
-  const [password, setPassword] = useState("");
-  const filiais:any  = [];
-  const [apiCalled, setApiCalled] = useState(false);
   const [affiliated, setAffiliated] = useState<any>([]);
-  const [loading, setLoading] = useState<boolean>(false);
-  const [message, setMessage] = useState<string>("");
+  // const [loading, setLoading] = useState<boolean>(false);
+  // const [message, setMessage] = useState<string>("");
   const title="Bem vindo ao Eris"
-  const [country, setCountry] = useState('');
   const [error, setError] = useState(false);
-  const [nameStatus, setNameStatus] = useState(['Filial', 'Vendedor', 'Transportador', 'Status', 'Estoque'])
+  const [nameStatus] = useState(['Filial', 'Vendedor', 'Transportador', 'Status', 'Estoque'])
   
   useEffect(() => {
     // const userLocal = getUserLocalStorage();
@@ -99,19 +89,19 @@ const AuthLogin = () => {
     getAffiliated().then(
       (response) => {
         
-        response.data.length > 0 ? (setAffiliated(response.data), setFilialUsuario(response.data[0].codigoTerceiro)): null
+        response.data.length > 0 ? (setAffiliated(response.data)): null
 
 
       setNameFilial(response.data[0].codigoTerceiro)
         console.log(response.data[0].codigoTerceiro)
 
       },
-      (error) => {
-        const _content =
-          (error.response && error.response.data) ||
-          error.message ||
-          error.toString();
-      }
+      // (error) => {
+      //   const _content =
+      //     (error.response && error.response.data) ||
+      //     error.message ||
+      //     error.toString();
+      // }
     );
     
 
@@ -162,20 +152,20 @@ const AuthLogin = () => {
 
 
 
-    setMessage("");
-    setLoading(true);
+    // setMessage("");
+    // setLoading(true);
 
 
      login(username, password, nameFilial).then(
       
-       (res:any) => {
+       () => {
 
-        console.log('ok')
+      
           navigate("/dashboards/modern");
           // window.location.reload();
        },
-       (error:any) => {
-        setError(true)
+      //  (error:any) => {
+      //   setError(true)
 
         //  const resMessage =
         //    (error.response &&
@@ -186,7 +176,7 @@ const AuthLogin = () => {
 
         //  setLoading(false);
         //  setMessage(resMessage);
-       }
+      //  }
      );
   };
 

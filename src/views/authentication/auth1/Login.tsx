@@ -1,14 +1,10 @@
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 import { useContext, useEffect, useState } from "react";
-import { Link } from 'react-router-dom';
-import { Grid, Box, Stack, Typography } from '@mui/material';
+import { Grid, Box } from '@mui/material';
 import PageContainer from 'src/components/container/PageContainer';
 import img1 from 'src/assets/images/backgrounds/ErisTransparente.png';
-import Logo from 'src/layouts/full/shared/logo/Logo';
 import AuthLogin from '../authForms/AuthLogin';
-import { useNavigate } from 'react-router-dom';
-import {getAffiliated} from "../../../services/user.service"
 
 
 
