@@ -72,7 +72,7 @@ const Menuitems: MenuitemsType[] = [
   },
  
    {
-    id: uniqueId(),
+    id: uniqueId(), 
     title: 'Dashboard',
     icon: IconAperture,
     href: '/menulevel/',
@@ -82,6 +82,12 @@ const Menuitems: MenuitemsType[] = [
         title: 'Painel de Pedidos',
         icon: IconPoint,
         href: '/pedidos/listapedidos',
+      }, 
+      {
+        id: uniqueId(),
+        title: ' Painel Correios',
+        icon: IconPoint,
+        href: '/pedidos/pedidocorreios',
       },
     ],
   },

@@ -115,6 +115,7 @@ const Maintenance = Loadable(lazy(() => import('../views/authentication/Maintena
 
 // landingpage
 const Landingpage = Loadable(lazy(() => import('../views/pages/landingpage/Landingpage')));
+const RequestEmail = Loadable(lazy(() => import('../views/pages/RequestEmail')));
 
 
 
@@ -166,6 +167,7 @@ const Router = [
       { path: '/tables/collapsible', element: <CollapsibleTable /> },
       { path: '/tables/search', element: <SearchTable /> },
       { path: '/pedidos/listapedidos', element: <ListOrder /> },
+      { path: '/pedidos/pedidocorreios', element: <RequestEmail /> },
       { path: '/forms/form-elements/autocomplete', element: <MuiAutoComplete /> },
       { path: '/forms/form-elements/button', element: <MuiButton /> },
       { path: '/forms/form-elements/checkbox', element: <MuiCheckbox /> },
