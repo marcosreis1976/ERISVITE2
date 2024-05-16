@@ -211,7 +211,6 @@ return (
 
   <Grid item xs={12} sm={1}>
   <CustomFormLabel htmlFor="standard-select-currency">Data final</CustomFormLabel>
-  End
 <CustomTextField id="password" value={dateEnd} onChange={handleChangeEnd} type="text" variant="outlined" fullWidth />
 
   </Grid>
