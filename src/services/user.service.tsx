@@ -12,27 +12,34 @@ import { API_URL } from '../constants/global'
 // };
 
 
+export const getCorreios = (data:any) =>{
+  
+  return axios.get(API_URL + `/Correios/PainelCorreios?${data}`);
+}
+
 export const getAffiliated = () =>{
   
   return axios.get(API_URL + `/Terceiros/ListarFiliais`);
 }
 
-export const getListSellers = () =>{
-  return axios.get(API_URL + "/Terceiros/ListarVendedores");
-}
-
-export const getListTransporters = () =>{
-  return axios.get(API_URL + "/Terceiros/ListarTransportadoras");
-}
-
-export const getListSummary= (Affiliated:Number, user: String) =>{
-  return axios.get(API_URL + `/Painel/PainelPedidosResumo?codigoFilial=${Affiliated}&usuario=${user}`);
-}
 
 
-export const getOrderPanel = (data:any) =>{
-  return axios.get(API_URL + `/Painel/PainelPedidos?${data}`);
-}
+ export const getListSellers = () =>{
+   return axios.get(API_URL + "/Terceiros/ListarVendedores");
+ }
+
+ export const getListTransporters = () =>{
+   return axios.get(API_URL + "/Terceiros/ListarTransportadoras");
+ }
+
+ export const getListSummary= (Affiliated:Number, user: String) =>{
+   return axios.get(API_URL + `/Painel/PainelPedidosResumo?codigoFilial=${Affiliated}&usuario=${user}`);
+ }
+
+
+ export const getOrderPanel = (data:any) =>{
+   return axios.get(API_URL + `/Painel/PainelPedidos?${data}`);
+ }
 
 export const itensRequest:any = [{codigoTerceiro: 0, nomeTerceiro: 'Pendente'}, {codigoTerceiro: 1, nomeTerceiro: 'Liberado para Expedição'}, 
 {codigoTerceiro: 2, nomeTerceiro: 'Em Separação'}, {codigoTerceiro: 3, nomeTerceiro: 'Separado'}, {codigoTerceiro: 4, nomeTerceiro: 'Liberado Faturamento'},
