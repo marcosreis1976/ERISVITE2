@@ -33,88 +33,7 @@ import {CartContext} from "src/App";
 import {getAffiliated, getListSellers, getListTransporters, itensRequest, itensStock, getOrderPanel, getListSummary} from "../../services/user.service"
 import BlankCard from 'src/components/shared/BlankCard';
 
-// import { InputMask, type InputMaskProps } from '@react-input/mask';
 
-// interface TablePaginationActionsProps {
-//   count: number;
-//   page: number;
-//   rowsPerPage: number;
-//   onPageChange: (event: React.MouseEvent<HTMLButtonElement>, newPage: number) => void;
-// }
-
-
-
-// function TablePaginationActions(props: TablePaginationActionsProps) {
-//   const theme = useTheme();
-//   const { count, page, rowsPerPage, onPageChange } = props;
-
-//   const handleFirstPageButtonClick = (event: any) => {
-//     onPageChange(event, 0);
-//   };
-
-//   const handleBackButtonClick = (event: any) => {
-//     onPageChange(event, page - 1);
-//   };
-
-//   const handleNextButtonClick = (event: any) => {
-//     onPageChange(event, page + 1);
-//   };
-
-//   const handleLastPageButtonClick = (event: any) => {
-//     onPageChange(event, Math.max(0, Math.ceil(count / rowsPerPage) - 1));
-//   };
-
-//   return (
-//     <Box sx={{ flexShrink: 0, ml: 2.5 }}>
-//       <IconButton
-//         onClick={handleFirstPageButtonClick}
-//         disabled={page === 0}
-//         aria-label="first page"
-//       >
-//         {theme.direction === 'rtl' ? <LastPageIcon /> : <FirstPageIcon />}
-//       </IconButton>
-//       <IconButton onClick={handleBackButtonClick} disabled={page === 0} aria-label="previous page">
-//         {theme.direction === 'rtl' ? <KeyboardArrowRight /> : <KeyboardArrowLeft />}
-//       </IconButton>
-//       <IconButton
-//         onClick={handleNextButtonClick}
-//         disabled={page >= Math.ceil(count / rowsPerPage) - 1}
-//         aria-label="next page"
-//       >
-//         {theme.direction === 'rtl' ? <KeyboardArrowLeft /> : <KeyboardArrowRight />}
-//       </IconButton>
-//       <IconButton
-//         onClick={handleLastPageButtonClick}
-//         disabled={page >= Math.ceil(count / rowsPerPage) - 1}
-//         aria-label="last page"
-//       >
-//         {theme.direction === 'rtl' ? <FirstPageIcon /> : <LastPageIcon />}
-//       </IconButton>
-//     </Box>
-//   );
-// }
-
-
-// interface OrderType {
-//   orderno: string;
-//   items: string;
-//   imgsrc: any;
-//   customer: string;
-//   total: string;
-//   status: string;
-//   date: string;
-// }
-
-
-// const BCrumb = [
-//   {
-//     to: '/',
-//     title: 'Home',
-//   },
-//   {
-//     title: 'Painel de Pedidos',
-//   },
-// ];
 
 const ListOrder = () => {
   let answer = useContext(CartContext)
@@ -144,6 +63,7 @@ const ListOrder = () => {
   const [statusSeparado, setStatusSeparado] = useState(0);
   const [statusLiberado, setStatusLiberado] = useState(0);
   const [statusEtiqueta, setStatusEtiqueta] = useState(0);
+  const [statusProtocolo, setStatusProtocolo] = useState(0);
 
   const [affiliated, setAffiliated] = useState([]);
   const [sellers, setSellers] = useState([]);
@@ -167,28 +87,10 @@ const ListOrder = () => {
     },
   }));
 
-  
-  // const [errors, setErros] = useState(false)
-  // const [errorMessage, setErrorMessage] = useState('')
-  // const [user, setUser] = useState<UserType>()
-  // const [amount, setAmount] = useState(0)
-  // const [opened, setOpened] = useState(false)
-  // const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - rows.length) : 0;
- 
-
-  // const ForwardedInputMask = forwardRef<HTMLInputElement, InputMaskProps>((props:any, forwardedRef) => {
-  //   return <InputMask ref={forwardedRef} mask=""  {...props} />;
-  // });
-  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-  // @ts-ignore
   const handleChangePage = (event: any, newPage: any) => {
     setPage(newPage);
   };
 
-  // const handleChangeRowsPerPage = (event: any,) => {
-  //   setRowsPerPage(parseInt(event.target.value, 10));
-  //   setPage(0);
-  // };
 
   useEffect(() => {
 
@@ -196,7 +98,7 @@ const ListOrder = () => {
 
     getAffiliated().then(
       (response) => {
-        
+
         setRequest(itensRequest)
         setStocks(itensStock)
         
@@ -225,6 +127,8 @@ const ListOrder = () => {
                     setStatusLiberado(resp4[0]['statusRegistros'])
                     let resp5 = response.data.filter((val:any)=>val.statusNome == 'Etiqueta Liberada')
                     setStatusEtiqueta(resp5[0]['statusRegistros'])
+                    let resp6 = response.data.filter((val:any)=>val.statusNome == 'Sem XML Protocolo')
+                    setStatusProtocolo(resp6[0]['statusRegistros'])
                     
                     // setListSummary(response.data)
 
@@ -400,6 +304,8 @@ const ListOrder = () => {
         setStatusLiberado(resp4[0]['statusRegistros'])
         let resp5 = response.data.filter((val:any)=>val.statusNome == 'Etiqueta Liberada')
         setStatusEtiqueta(resp5[0]['statusRegistros'])
+        let resp6 = response.data.filter((val:any)=>val.statusNome == 'Sem XML Protocolo')
+        setStatusProtocolo(resp6[0]['statusRegistros'])
         
         // setListSummary(response.data)
 
@@ -592,7 +498,7 @@ const ListOrder = () => {
                       onChange={handleChangeVendedor}
                       fullWidth
                       variant="outlined"
-                    >
+                    >Filial
                        <MenuItem value="-1">{nameStatus[1]}</MenuItem>
                       {sellers.map((option:any) => (
                         <MenuItem key={option.codigoTerceiro} value={option.codigoTerceiro}>
@@ -747,6 +653,19 @@ onClick={()=>clickStatus('Liberado para Expedição')}
 <Typography style={{fontSize: '12pt', textAlign: 'center',fontWeight: 600}}>{statusLiberado}</Typography>
 </BoxStyled>   
 </Grid>
+<Grid item xs={12} sm={1} style={{position: 'relative', top: '45px'}}>
+<BoxStyled
+// onClick={() => dispatch(setVisibilityFilter('Open'))}
+sx={{ backgroundColor: 'secondary.light', color: 'secondary.main' }}
+onClick={()=>clickStatus('Etiqueta Liberada')}
+>
+<Typography style={{fontSize: '9pt', textAlign: 'center', width: '100%', fontWeight: 600}}>Protocolos</Typography>
+<Typography style={{fontSize: '12pt', textAlign: 'center', fontWeight: 600}}>{statusProtocolo}</Typography>
+</BoxStyled> 
+             
+              </Grid> 
+
+
 <Grid item xs={12} sm={1} style={{position: 'relative', top: '45px'}}>
 <BoxStyled
 // onClick={() => dispatch(setVisibilityFilter('Open'))}

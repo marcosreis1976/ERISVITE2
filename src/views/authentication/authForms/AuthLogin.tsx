@@ -88,7 +88,7 @@ const AuthLogin = () => {
 
     getAffiliated().then(
       (response) => {
-        
+        console.log(response)
         response.data.length > 0 ? (setAffiliated(response.data)): null
 
 
