@@ -27,10 +27,10 @@ import CustomTextField from '../../components/forms/theme-elements/CustomTextFie
 import CustomFormLabel from '../../components/forms/theme-elements/CustomFormLabel';
 import CustomSelect from '../../components/forms/theme-elements/CustomSelect';
 import PageContainer from 'src/components/container/PageContainer';
-import {CartContext} from "src/App";
+import { CartContext } from "src/App";
 // import { UserType } from 'src/types/auth/auth';
 
-import {getAffiliated, getListSellers, getListTransporters, itensRequest, itensStock, getOrderPanel, getListSummary} from "../../services/user.service"
+import { getAffiliated, getListSellers, getListTransporters, itensRequest, itensStock, getOrderPanel, getListSummary } from "../../services/user.service"
 import BlankCard from 'src/components/shared/BlankCard';
 
 
@@ -94,54 +94,55 @@ const ListOrder = () => {
 
   useEffect(() => {
 
-    
+
 
     getAffiliated().then(
       (response) => {
 
         setRequest(itensRequest)
         setStocks(itensStock)
-        
-        response.data.length > 0 ? setAffiliated(response.data): null
+
+        response.data.length > 0 ? setAffiliated(response.data) : null
         getListSellers().then(
           (response) => {
-            response.data.length > 0 ? setSellers(response.data): null
+            console.log(response.data.length)
+            response.data.length > 0 ? setSellers(response.data) : null
             getListTransporters().then(
               (response) => {
-                response.data.length > 0 ? setTransporters(response.data): null
-      
+                response.data.length > 0 ? setTransporters(response.data) : null
+
                 getListSummary(answer.user.filialUsuario, answer.user.userName).then(
-                  (response)=>{
+                  (response) => {
                     console.log(response)
 
-          
 
-                    let resp = response.data.filter((val:any)=>val.statusNome == 'Pendente')
+
+                    let resp = response.data.filter((val: any) => val.statusNome == 'Pendente')
                     setStatusPendente(resp[0]['statusRegistros'])
-                    let resp2 = response.data.filter((val:any)=>val.statusNome == 'Erro Autorização')
+                    let resp2 = response.data.filter((val: any) => val.statusNome == 'Erro Autorização')
                     console.log(resp2)
                     setStatusErro(resp2[0]['statusRegistros'])
-                    let resp3 = response.data.filter((val:any)=>val.statusNome == 'Em Separação')
+                    let resp3 = response.data.filter((val: any) => val.statusNome == 'Em Separação')
                     setStatusSeparado(resp3[0]['statusRegistros'])
-                    let resp4 = response.data.filter((val:any)=>val.statusNome == 'Liberado Expedição')
+                    let resp4 = response.data.filter((val: any) => val.statusNome == 'Liberado Expedição')
                     setStatusLiberado(resp4[0]['statusRegistros'])
-                    let resp5 = response.data.filter((val:any)=>val.statusNome == 'Etiqueta Liberada')
+                    let resp5 = response.data.filter((val: any) => val.statusNome == 'Etiqueta Liberada')
                     setStatusEtiqueta(resp5[0]['statusRegistros'])
-                    let resp6 = response.data.filter((val:any)=>val.statusNome == 'Sem XML Protocolo')
+                    let resp6 = response.data.filter((val: any) => val.statusNome == 'Sem XML Protocolo')
                     setStatusProtocolo(resp6[0]['statusRegistros'])
-                    
+
                     // setListSummary(response.data)
 
-  
+
                     // setPage(true)
                     // setSearch(false)
                   },
-              //     (error) => {
-              //   const _content =
-              //     (error.response && error.response.data) ||
-              //     error.message ||
-              //     error.toString();
-              // }
+                  //     (error) => {
+                  //   const _content =
+                  //     (error.response && error.response.data) ||
+                  //     error.message ||
+                  //     error.toString();
+                  // }
                 )
               },
               // (error) => {
@@ -169,7 +170,7 @@ const ListOrder = () => {
       //     error.toString();
       // }
     );
-   
+
   }, []);
 
 
@@ -190,7 +191,7 @@ const ListOrder = () => {
 
   const handleChangePedidos = () => {
     setNamePedidos(!namePedidos)
- };
+  };
 
   const handleChangeStatus = (event: React.ChangeEvent<HTMLInputElement>) => {
     setNameStatuss(event.target.value);
@@ -222,20 +223,20 @@ const ListOrder = () => {
 
 
   const handleSearch = () => {
- 
+
     console.log(nameFilial)
-    if (nameFilial == -1){
+    if (nameFilial == -1) {
       setError(true)
       return
     }
     // setErros(false)
     // setSearch(true)
     // setCurrentPage(1)
-    
-     let parameter = `codigoFilial=${nameFilial}`
+
+    let parameter = `codigoFilial=${nameFilial}`
 
     nameVendedor >= 0 ? parameter = parameter + `&codigoVendedor=${nameVendedor}` : null
-    nameTransportador >= 0 ? parameter = parameter + `&codigoTransportadora=${nameTransportador}`: null
+    nameTransportador >= 0 ? parameter = parameter + `&codigoTransportadora=${nameTransportador}` : null
     namePedidos != false ? parameter = parameter + `&soPedidosInternet=${1}` : parameter = parameter + `&soPedidosInternet=${0}`
     nameStatuss >= '' ? parameter = parameter + `&statusPainel=${nameStatuss}` : null
     nameEstoque >= 0 ? parameter = parameter + `&statusEstoque=${nameEstoque}` : null
@@ -246,35 +247,35 @@ const ListOrder = () => {
     nameDataFinal != '' ? parameter = parameter + `&dataFinal=${nameDataFinal}` : null
 
     console.log(nameStatuss)
-     setParameter(parameter)
+    setParameter(parameter)
 
-     parameter = parameter + `&numeroPagina=1&tamanhoPagina=7&usuario=${dataPage.user?.userName}`
+    parameter = parameter + `&numeroPagina=1&tamanhoPagina=7&usuario=${dataPage.user?.userName}`
 
-     getOrderPanel(parameter).then(
-       (response) => {
+    getOrderPanel(parameter).then(
+      (response) => {
         console.log(response.data);
-         response.data.map((value:any)=>{
-           let year =value.datahoraCadastro.substring(0, 4);
-           let month =value.datahoraCadastro.substring(5, 7);
-           let day =value.datahoraCadastro.substring(8, 10);
+        response.data.map((value: any) => {
+          let year = value.datahoraCadastro.substring(0, 4);
+          let month = value.datahoraCadastro.substring(5, 7);
+          let day = value.datahoraCadastro.substring(8, 10);
 
-           let hours = value.datahoraCadastro.substring(11, 16);
+          let hours = value.datahoraCadastro.substring(11, 16);
 
-           let data = `${day}/${month}/${year} ${hours}`
-           value.datahoraCadastro = data
-         })
+          let data = `${day}/${month}/${year} ${hours}`
+          value.datahoraCadastro = data
+        })
 
-         setValueTable(response.data)
+        setValueTable(response.data)
         //  setAmount(response.data[0].totalRegistros)
         //  setSearch(false)
         //  setErros(false)
 
-         setTotalPages(Math.ceil(response.data[0].totalRegistros / 7));
+        setTotalPages(Math.ceil(response.data[0].totalRegistros / 7));
         //  const startIndex = (currentPage - 1) * 10;
         //  const endIndex = startIndex + 10;
         //  const currentItems = response.data.slice(startIndex, endIndex);
         reload()
-        },
+      },
       //  (error) => {
       //    const _content =
       //      (error.response && error.response.data) ||
@@ -286,39 +287,39 @@ const ListOrder = () => {
       //     //  setErrorMessage('Nenhum registro encontrado!')
 
       //  }
-     );
+    );
 
   };
 
-  const reload = () =>{
+  const reload = () => {
     getListSummary(answer.user.filialUsuario, answer.user.userName).then(
-      (response)=>{
+      (response) => {
         console.log(response)
-        let resp = response.data.filter((val:any)=>val.statusNome == 'Pendente')
+        let resp = response.data.filter((val: any) => val.statusNome == 'Pendente')
         setStatusPendente(resp[0]['statusRegistros'])
-        let resp2 = response.data.filter((val:any)=>val.statusNome == 'Erro Autorização')
+        let resp2 = response.data.filter((val: any) => val.statusNome == 'Erro Autorização')
         setStatusErro(resp2[0]['statusRegistros'])
-        let resp3 = response.data.filter((val:any)=>val.statusNome == 'Em Separação')
+        let resp3 = response.data.filter((val: any) => val.statusNome == 'Em Separação')
         setStatusSeparado(resp3[0]['statusRegistros'])
-        let resp4 = response.data.filter((val:any)=>val.statusNome == 'Liberado Expedição')
+        let resp4 = response.data.filter((val: any) => val.statusNome == 'Liberado Expedição')
         setStatusLiberado(resp4[0]['statusRegistros'])
-        let resp5 = response.data.filter((val:any)=>val.statusNome == 'Etiqueta Liberada')
+        let resp5 = response.data.filter((val: any) => val.statusNome == 'Etiqueta Liberada')
         setStatusEtiqueta(resp5[0]['statusRegistros'])
-        let resp6 = response.data.filter((val:any)=>val.statusNome == 'Sem XML Protocolo')
+        let resp6 = response.data.filter((val: any) => val.statusNome == 'Sem XML Protocolo')
         setStatusProtocolo(resp6[0]['statusRegistros'])
-        
+
         // setListSummary(response.data)
 
 
         // setPage(true)
         // setSearch(false)
       },
-  //     (error) => {
-  //   const _content =
-  //     (error.response && error.response.data) ||
-  //     error.message ||
-  //     error.toString();
-  // }
+      //     (error) => {
+      //   const _content =
+      //     (error.response && error.response.data) ||
+      //     error.message ||
+      //     error.toString();
+      // }
     )
   }
 
@@ -332,10 +333,10 @@ const ListOrder = () => {
     let answer = parameter + `&numeroPagina=${newPage}&tamanhoPagina=7&usuario=${dataPage.user?.userName}`
     getOrderPanel(answer).then(
       (response) => {
-        response.data.map((value:any)=>{
-          let year =value.datahoraCadastro.substring(0, 4);
-          let month =value.datahoraCadastro.substring(5, 7);
-          let day =value.datahoraCadastro.substring(8, 10);
+        response.data.map((value: any) => {
+          let year = value.datahoraCadastro.substring(0, 4);
+          let month = value.datahoraCadastro.substring(5, 7);
+          let day = value.datahoraCadastro.substring(8, 10);
           let hours = value.datahoraCadastro.substring(11, 16);
           let data = `${day}/${month}/${year} ${hours}`
           value.datahoraCadastro = data
@@ -348,7 +349,7 @@ const ListOrder = () => {
         // const startIndex = (currentPage - 1) * 10;
         // const endIndex = startIndex + 10;
         // const currentItems = response.data.slice(startIndex, endIndex);
-       },
+      },
       // (error) => {
       //   const _content =
       //     (error.response && error.response.data) ||
@@ -363,7 +364,7 @@ const ListOrder = () => {
     );
   };
 
-  const clean = () =>{
+  const clean = () => {
     setNameFilial(-1);
     setNameVendedor(-1);
     setNameTransportador(-1);
@@ -375,9 +376,9 @@ const ListOrder = () => {
     setNamePedidoWeb('');
     setNameDataInicial('');
     setNameDataFinal('');
-     setTimeout(() => {
+    setTimeout(() => {
       //  setPage(true)
-     }, 10);
+    }, 10);
   }
 
   // const refresh = () =>{
@@ -396,512 +397,415 @@ const ListOrder = () => {
   // }
 
 
-  const clickStatus = (name:any) =>{
+  const clickStatus = (name: any) => {
 
     console.log(name)
-    if (nameFilial == -1){
+    if (nameFilial == -1) {
       setError(true)
       return
     }
     // setErros(false)
     // setSearch(true)
     // setCurrentPage(1)
-    
-     let parameter = `codigoFilial=${nameFilial}&statusPainel=${name}`
 
-      setParameter(parameter)
+    let parameter = `codigoFilial=${nameFilial}&statusPainel=${name}`
 
-      parameter = parameter + `&numeroPagina=1&tamanhoPagina=7&usuario=${dataPage.user?.userName}`
+    setParameter(parameter)
 
-      getOrderPanel(parameter).then(
-        (response) => {
-         console.log(response.data);
-          response.data.map((value:any)=>{
-            let year =value.datahoraCadastro.substring(0, 4);
-            let month =value.datahoraCadastro.substring(5, 7);
-            let day =value.datahoraCadastro.substring(8, 10);
+    parameter = parameter + `&numeroPagina=1&tamanhoPagina=7&usuario=${dataPage.user?.userName}`
 
-            let hours = value.datahoraCadastro.substring(11, 16);
+    getOrderPanel(parameter).then(
+      (response) => {
+        console.log(response.data);
+        response.data.map((value: any) => {
+          let year = value.datahoraCadastro.substring(0, 4);
+          let month = value.datahoraCadastro.substring(5, 7);
+          let day = value.datahoraCadastro.substring(8, 10);
 
-            let data = `${day}/${month}/${year} ${hours}`
-            value.datahoraCadastro = data
-          })
+          let hours = value.datahoraCadastro.substring(11, 16);
 
-          console.log(response.data)
-          setValueTable(response.data)
-          // setAmount(response.data[0].totalRegistros)
-          // setSearch(false)
-          // setErros(false)
+          let data = `${day}/${month}/${year} ${hours}`
+          value.datahoraCadastro = data
+        })
 
-          setTotalPages(Math.ceil(response.data[0].totalRegistros / 7));
-          // const startIndex = (currentPage - 1) * 10;
-          // const endIndex = startIndex + 10;
-          // const currentItems = response.data.slice(startIndex, endIndex);
-          // refresh()
-         },
-        // (error) => {
-          // const _content =
-          //   (error.response && error.response.data) ||
-          //   error.message ||
-          //   error.toString();
-          //   setValueTable([])
-          //   setSearch(false)
-          //   setErros(true)
-          //   setErrorMessage('Nenhum registro encontrado!')
+        console.log(response.data)
+        setValueTable(response.data)
+        // setAmount(response.data[0].totalRegistros)
+        // setSearch(false)
+        // setErros(false)
 
-        // }
-      );
+        setTotalPages(Math.ceil(response.data[0].totalRegistros / 7));
+        // const startIndex = (currentPage - 1) * 10;
+        // const endIndex = startIndex + 10;
+        // const currentItems = response.data.slice(startIndex, endIndex);
+        // refresh()
+      },
+      // (error) => {
+      // const _content =
+      //   (error.response && error.response.data) ||
+      //   error.message ||
+      //   error.toString();
+      //   setValueTable([])
+      //   setSearch(false)
+      //   setErros(true)
+      //   setErrorMessage('Nenhum registro encontrado!')
+
+      // }
+    );
   }
 
   return (
     <>
-      {error ? 
-      <Welcome color='white' type='warning' title='Atenção' subtitle='Filial é obrigatório!'/>
-    : null}
+       {error ?
+        <Welcome color='white' type='warning' title='Atenção' subtitle='Filial é obrigatório!' />
+        : null}
  
-    <PageContainer title="Painel de Pedidos"  description="">
-      {/* breadcrumb */}
-      {/* <Breadcrumb title="Pagination Table" items={BCrumb} /> */}
-      {/* end breadcrumb */}
- 
+        <Grid item xs={12} sm={8} style={{ marginBottom: '-20px' }}>
+           <Box>
+            <Grid container spacing={1} style={{ position: 'relative', top: '-30px' }}>
 
-
-
- 
-      <Grid item xs={12} sm={8} style={{marginBottom: '-20px'}}>
-
-      <Box>
-      <Grid container spacing={1} style={{position: 'relative', top: '-30px'}}>
-
-      <Grid item xs={12} sm={2}>
-            <CustomFormLabel htmlFor="standard-select-currency">Filial</CustomFormLabel>
+              <Grid item xs={12} sm={2}>
+                <CustomFormLabel htmlFor="standard-select-currency">Filial</CustomFormLabel>
                 <CustomSelect
-                      value={nameFilial}
-                      onChange={handleChangeFilial}
-                      fullWidth
-                      variant="outlined"
-                    >
-                      <MenuItem value="-1">{nameStatus[0]}</MenuItem>
-                      {affiliated.map((option:any) => (
-                        <MenuItem key={option.codigoTerceiro} value={option.codigoTerceiro}>
-                          {option.nomeTerceiro}
-                        </MenuItem>
-                      ))}
-                    </CustomSelect>
+                  value={nameFilial}
+                  onChange={handleChangeFilial}
+                  fullWidth
+                  variant="outlined"
+                >
+                  <MenuItem value="-1">{nameStatus[0]}</MenuItem>
+                  {affiliated.map((option: any) => (
+                    <MenuItem key={option.codigoTerceiro} value={option.codigoTerceiro}>
+                      {option.nomeTerceiro}
+                    </MenuItem>
+                  ))}
+                </CustomSelect>
 
-             </Grid>
-             <Grid item xs={12} sm={2}>
-              
-              <CustomFormLabel htmlFor="standard-select-currency">Vendedor</CustomFormLabel>
+              </Grid>
+                <Grid item xs={12} sm={2}>
+
+                <CustomFormLabel htmlFor="standard-select-currency">Vendedor</CustomFormLabel>
                 <CustomSelect
-                      value={nameVendedor}
-                      onChange={handleChangeVendedor}
-                      fullWidth
-                      variant="outlined"
-                    >Filial
-                       <MenuItem value="-1">{nameStatus[1]}</MenuItem>
-                      {sellers.map((option:any) => (
-                        <MenuItem key={option.codigoTerceiro} value={option.codigoTerceiro}>
-                          {option.nomeTerceiro}
-                        </MenuItem>
-                      ))}
-                    </CustomSelect>
-                    </Grid>
-                    <Grid item xs={12} sm={2}>
+                  value={nameVendedor}
+                  onChange={handleChangeVendedor}
+                  fullWidth
+                  variant="outlined"
+                >
+                  <MenuItem value="-1">{nameStatus[1]}</MenuItem>
+                  {transporters.map((option: any) => (
+                    <MenuItem key={option.codigoTerceiro} value={option.codigoTerceiro}>
+                      {option.nomeTerceiro}
+                    </MenuItem>
+                  ))}
+                </CustomSelect>
+              </Grid>  *
+              <Grid item xs={12} sm={2}>
                 <CustomFormLabel htmlFor="standard-select-currency">Transportadora</CustomFormLabel>
                 <CustomSelect
-                      value={nameTransportador}
-                      onChange={handleChangetransportador}
-                      fullWidth
-                      variant="outlined"
-                    >
-                      <MenuItem value="-1">{nameStatus[2]}</MenuItem>
-                      {transporters.map((option:any) => (
-                        <MenuItem key={option.codigoTerceiro} value={option.codigoTerceiro}>
-                          {option.nomeTerceiro}
-                        </MenuItem>
-                      ))}
-                    </CustomSelect>
-                </Grid>
-                <Grid item xs={12} sm={1}>
+                  value={nameTransportador}
+                  onChange={handleChangetransportador}
+                  fullWidth
+                  variant="outlined"
+                >
+                  <MenuItem value="-1">{nameStatus[2]}</MenuItem>
+                  {transporters.map((option: any) => (
+                    <MenuItem key={option.codigoTerceiro} value={option.codigoTerceiro}>
+                      {option.nomeTerceiro}
+                    </MenuItem>
+                  ))}
+                </CustomSelect>
+              </Grid>
+              <Grid item xs={12} sm={1}>
                 <FormControlLabel
-                style={{position: 'relative', width: '100%', top: '40px'}}
-      control={
-        <CustomCheckbox
-          onChange={handleChangePedidos}
-          defaultChecked={namePedidos}
-          color="primary"
-          inputProps={{ 'aria-label': 'checkbox with default color' }}
-        />
-      }
-      label="Só Pedidos Internet"
-    />
-                </Grid>
-                <Grid item xs={12} sm={2}>
+                  style={{ position: 'relative', width: '100%', top: '40px' }}
+                  control={
+                    <CustomCheckbox
+                      onChange={handleChangePedidos}
+                      defaultChecked={namePedidos}
+                      color="primary"
+                      inputProps={{ 'aria-label': 'checkbox with default color' }}
+                    />
+                  }
+                  label="Só Pedidos Internet"
+                />
+              </Grid>
+              <Grid item xs={12} sm={2}>
                 <CustomFormLabel htmlFor="standard-select-currency">Status</CustomFormLabel>
                 <CustomSelect
-                      value={nameStatuss}
-                      onChange={handleChangeStatus}
-                      fullWidth
-                      variant="outlined"
-                    >
-                <MenuItem value="-1">{nameStatus[3]}</MenuItem>
-                      {requests.map((option:any) => (
-                        <MenuItem key={option.codigoTerceiro} value={option.nomeTerceiro}>
-                          {option.nomeTerceiro}
-                        </MenuItem>
-                      ))}
-                    </CustomSelect>
-                  </Grid>
+                  value={nameStatuss}
+                  onChange={handleChangeStatus}
+                  fullWidth
+                  variant="outlined"
+                >
+                  <MenuItem value="-1">{nameStatus[3]}</MenuItem>
+                  {requests.map((option: any) => (
+                    <MenuItem key={option.codigoTerceiro} value={option.nomeTerceiro}>
+                      {option.nomeTerceiro}
+                    </MenuItem>
+                  ))}
+                </CustomSelect>
+              </Grid>
 
 
-                  <Grid item xs={12} sm={1} style={{position: 'relative', top: '45px', textAlign: 'center'}}>
-              <Tooltip  title="Pesquisar" >
-        <Fab  color="primary" onClick={()=>handleSearch()} aria-label="send">
-          <IconSearch width={20} />
-        </Fab>
-      </Tooltip>
+              <Grid item xs={12} sm={1} style={{ position: 'relative', top: '45px', textAlign: 'center' }}>
+                <Tooltip title="Pesquisar" >
+                  <Fab color="primary" onClick={() => handleSearch()} aria-label="send">
+                    <IconSearch width={20} />
+                  </Fab>
+                </Tooltip>
 
 
-    </Grid>
+              </Grid>
 
-    <Grid item xs={12} sm={1} style={{position: 'relative', top: '45px', textAlign: 'center'}}>
-    <Tooltip title="Carregar">
-        <Fab color="primary" onClick={()=>reload()}>
-          <IconRefresh width={20} />
-        </Fab>
-      </Tooltip>
+              <Grid item xs={12} sm={1} style={{ position: 'relative', top: '45px', textAlign: 'center' }}>
+                <Tooltip title="Carregar">
+                  <Fab color="primary" onClick={() => reload()}>
+                    <IconRefresh width={20} />
+                  </Fab>
+                </Tooltip>
 
 
-    </Grid>
+              </Grid>
 
-    <Grid item xs={12} sm={1} style={{position: 'relative', top: '45px', textAlign:'center'}}>
-    <Tooltip title="Limpar" onClick={()=> clean()}>
-        <Fab color="error" >
-          <IconEraser width={20} />
-        </Fab>
-      </Tooltip>
-    </Grid>
-                  
-
-         
-                </Grid>
-
-       </Box>
-       <Box>
-      
-       <Grid container spacing={1} style={{position: 'relative', top: '-40px'}}>
-       <Grid item xs={12} lg={1}>
+              <Grid item xs={12} sm={1} style={{ position: 'relative', top: '45px', textAlign: 'center' }}>
+                <Tooltip title="Limpar" onClick={() => clean()}>
+                  <Fab color="error" >
+                    <IconEraser width={20} />
+                  </Fab>
+                </Tooltip>
+              </Grid>
 
 
 
-<CustomFormLabel htmlFor="standard-select-currency">Estoque</CustomFormLabel>
-<CustomSelect
-      value={nameEstoque}
-      onChange={handleChangeEstoque}
-      fullWidth
-      variant="outlined"
-    >
-      <MenuItem value="-1">{nameStatus[4]}</MenuItem>
-      {stocks.map((option:any) => (
-        <MenuItem key={option.codigoTerceiro} value={option.codigoTerceiro}>
-          {option.nomeTerceiro}
-        </MenuItem>
-      ))}
-    </CustomSelect>
-</Grid>
-<Grid item xs={12} lg={2}>
+            </Grid>
+
+          </Box> 
+          
+          
+          
+          
+          
+          
+          <Box>
+
+            <Grid container spacing={1} style={{ position: 'relative', top: '-40px' }}>
+              <Grid item xs={12} lg={1}>
+
+
+
+                <CustomFormLabel htmlFor="standard-select-currency">Estoque</CustomFormLabel>
+                <CustomSelect
+                  value={nameEstoque}
+                  onChange={handleChangeEstoque}
+                  fullWidth
+                  variant="outlined"
+                >
+                  <MenuItem value="-1">{nameStatus[4]}</MenuItem>
+                  {stocks.map((option: any) => (
+                    <MenuItem key={option.codigoTerceiro} value={option.codigoTerceiro}>
+                      {option.nomeTerceiro}
+                    </MenuItem>
+                  ))}
+                </CustomSelect>
+              </Grid>
+              <Grid item xs={12} lg={2}>
                 <CustomFormLabel htmlFor="standard-select-currency">Cliente</CustomFormLabel>
                 <CustomTextField id="password" value={nameCliente} onChange={handleChangeCliente} type="text" variant="outlined" fullWidth
-      
-      />
-                </Grid>
-                <Grid item xs={12} lg={1}>
+
+                />
+              </Grid>
+              <Grid item xs={12} lg={1}>
                 <CustomFormLabel htmlFor="standard-select-currency">Pedido</CustomFormLabel>
                 <CustomTextField id="password" value={namePedido} onChange={handleChangePedido} type="text" variant="outlined" fullWidth
-      
-      />
-                </Grid>
-                <Grid item xs={12} lg={1}>
-                <CustomFormLabel style={{fontSize: '10pt'}} htmlFor="standard-select-currency">Pedido Web</CustomFormLabel>
+
+                />
+              </Grid>
+              <Grid item xs={12} lg={1}>
+                <CustomFormLabel style={{ fontSize: '10pt' }} htmlFor="standard-select-currency">Pedido Web</CustomFormLabel>
                 <CustomTextField id="password" value={namePedidoWeb} onChange={handleChangePedidoWeb} type="text" variant="outlined" fullWidth
-      
-      />
-                </Grid>
-                <Grid item xs={12} lg={1}>
+
+                />
+              </Grid>
+              <Grid item xs={12} lg={1}>
                 <CustomFormLabel htmlFor="standard-select-currency">Data Inicial</CustomFormLabel>
                 <CustomTextField id="password" type="text" value={nameDataInicial} onChange={handleChangeDataInicial} variant="outlined" fullWidth
-      
-      />
-                </Grid>
 
-                <Grid item xs={12} lg={1}>
+                />
+              </Grid>
+
+              <Grid item xs={12} lg={1}>
                 <CustomFormLabel htmlFor="standard-select-currency">Data Final</CustomFormLabel>
-                <CustomTextField  variant="outlined" fullWidth
-      value={nameDataFinal} onChange={handleChangeDataFinal}
-      />
-                </Grid>
+                <CustomTextField variant="outlined" fullWidth
+                  value={nameDataFinal} onChange={handleChangeDataFinal}
+                />
+              </Grid>
 
-                <Grid item xs={12} sm={1} style={{position: 'relative', top: '45px'}} >
+              <Grid item xs={12} sm={1} style={{ position: 'relative', top: '45px' }} >
                 <BoxStyled
 
-// onClick={() => dispatch(setVisibilityFilter('Open'))}
-sx={{ backgroundColor: 'success.light', color: 'success.main' }}
-onClick={()=>clickStatus('Liberado para Expedição')}
->
-<Typography style={{fontSize: '9pt', textAlign: 'center', width: '100%', fontWeight: 600}}>Expedição</Typography>
-<Typography style={{fontSize: '12pt', textAlign: 'center',fontWeight: 600}}>{statusLiberado}</Typography>
-</BoxStyled>   
-</Grid>
-<Grid item xs={12} sm={1} style={{position: 'relative', top: '45px'}}>
-<BoxStyled
-// onClick={() => dispatch(setVisibilityFilter('Open'))}
-sx={{ backgroundColor: 'secondary.light', color: 'secondary.main' }}
-onClick={()=>clickStatus('Etiqueta Liberada')}
->
-<Typography style={{fontSize: '9pt', textAlign: 'center', width: '100%', fontWeight: 600}}>Protocolos</Typography>
-<Typography style={{fontSize: '12pt', textAlign: 'center', fontWeight: 600}}>{statusProtocolo}</Typography>
-</BoxStyled> 
-             
-              </Grid> 
+                  sx={{ backgroundColor: 'success.light', color: 'success.main' }}
+                  onClick={() => clickStatus('Liberado para Expedição')}
+                >
+                  <Typography style={{ fontSize: '9pt', textAlign: 'center', width: '100%', fontWeight: 600 }}>Expedição</Typography>
+                  <Typography style={{ fontSize: '12pt', textAlign: 'center', fontWeight: 600 }}>{statusLiberado}</Typography>
+                </BoxStyled>
+              </Grid>
+              <Grid item xs={12} sm={1} style={{ position: 'relative', top: '45px' }}>
+                <BoxStyled
+                  sx={{ backgroundColor: 'secondary.light', color: 'secondary.main' }}
+                  onClick={() => clickStatus('Etiqueta Liberada')}
+                >
+                  <Typography style={{ fontSize: '9pt', textAlign: 'center', width: '100%', fontWeight: 600 }}>Protocolos</Typography>
+                  <Typography style={{ fontSize: '12pt', textAlign: 'center', fontWeight: 600 }}>{statusProtocolo}</Typography>
+                </BoxStyled>
+
+              </Grid>
 
 
-<Grid item xs={12} sm={1} style={{position: 'relative', top: '45px'}}>
-<BoxStyled
-// onClick={() => dispatch(setVisibilityFilter('Open'))}
-sx={{ backgroundColor: 'secondary.light', color: 'secondary.main' }}
-onClick={()=>clickStatus('Etiqueta Liberada')}
->
-<Typography style={{fontSize: '9pt', textAlign: 'center', width: '100%', fontWeight: 600}}>Etiquetas</Typography>
-<Typography style={{fontSize: '12pt', textAlign: 'center', fontWeight: 600}}>{statusEtiqueta}</Typography>
-</BoxStyled> 
-             
-              </Grid> 
-              <Grid item xs={12} sm={1} style={{position: 'relative', top: '45px'}}>
+              <Grid item xs={12} sm={1} style={{ position: 'relative', top: '45px' }}>
+                <BoxStyled
+                  sx={{ backgroundColor: 'secondary.light', color: 'secondary.main' }}
+                  onClick={() => clickStatus('Etiqueta Liberada')}
+                >
+                  <Typography style={{ fontSize: '9pt', textAlign: 'center', width: '100%', fontWeight: 600 }}>Etiquetas</Typography>
+                  <Typography style={{ fontSize: '12pt', textAlign: 'center', fontWeight: 600 }}>{statusEtiqueta}</Typography>
+                </BoxStyled>
 
-<BoxStyled
-// onClick={() => dispatch(setVisibilityFilter('Open'))}
-onClick={()=>clickStatus('Pendente')}
-sx={{ backgroundColor: 'warning.light', color: 'warning.main' }}
->
-<Typography style={{fontSize: '9pt', textAlign: 'center', fontWeight: 600}}>Pendente</Typography>
+              </Grid>
+              <Grid item xs={12} sm={1} style={{ position: 'relative', top: '45px' }}>
 
-<Typography style={{fontSize: '12pt', textAlign: 'center', fontWeight: 600}}>{statusPendente}</Typography>
-</BoxStyled>
+                <BoxStyled
+                  onClick={() => clickStatus('Pendente')}
+                  sx={{ backgroundColor: 'warning.light', color: 'warning.main' }}
+                >
+                  <Typography style={{ fontSize: '9pt', textAlign: 'center', fontWeight: 600 }}>Pendente</Typography>
 
-</Grid>
-<Grid item xs={12} sm={1} style={{position: 'relative', top: '45px', }}>
+                  <Typography style={{ fontSize: '12pt', textAlign: 'center', fontWeight: 600 }}>{statusPendente}</Typography>
+                </BoxStyled>
 
-<BoxStyled
-// onClick={() => dispatch(setVisibilityFilter('Open'))}
-onClick={()=>clickStatus('Erro Autorização')}
-sx={{ backgroundColor: 'error.light', color: 'error.main' }}
->
-<Typography style={{fontSize: '9pt', textAlign: 'center', width: '100%', fontWeight: 600}}>Erro</Typography>
-<Typography style={{fontSize: '12pt', textAlign: 'center', fontWeight: 600}}>{statusErro}</Typography>
-</BoxStyled>      
- </Grid>
+              </Grid>
+              <Grid item xs={12} sm={1} style={{ position: 'relative', top: '45px', }}>
 
- <Grid item xs={12} sm={1} style={{position: 'relative', top: '45px', }}>
+                <BoxStyled
+                  onClick={() => clickStatus('Erro Autorização')}
+                  sx={{ backgroundColor: 'error.light', color: 'error.main' }}
+                >
+                  <Typography style={{ fontSize: '9pt', textAlign: 'center', width: '100%', fontWeight: 600 }}>Erro</Typography>
+                  <Typography style={{ fontSize: '12pt', textAlign: 'center', fontWeight: 600 }}>{statusErro}</Typography>
+                </BoxStyled>
+              </Grid>
 
-<BoxStyled
-// onClick={() => dispatch(setVisibilityFilter('Open'))}
-onClick={()=>clickStatus('Em Separação')}
-sx={{ backgroundColor: 'primary.light', color: 'primary.main' }}
->
-<Typography style={{fontSize: '9pt', textAlign: 'center', width: '100%', fontWeight: 600}}>Separação</Typography>
-<Typography style={{fontSize: '12pt', textAlign: 'center', fontWeight: 600}}>{statusSeparado}</Typography>
-</BoxStyled>      
-</Grid>
-    
-
+              <Grid item xs={12} sm={1} style={{ position: 'relative', top: '45px', }}>
+                <BoxStyled
+                  onClick={() => clickStatus('Em Separação')}
+                  sx={{ backgroundColor: 'primary.light', color: 'primary.main' }}
+                >
+                  <Typography style={{ fontSize: '9pt', textAlign: 'center', width: '100%', fontWeight: 600 }}>Separação</Typography>
+                  <Typography style={{ fontSize: '12pt', textAlign: 'center', fontWeight: 600 }}>{statusSeparado}</Typography>
+                </BoxStyled>
+              </Grid>
+            </Grid>
+          </Box>
         </Grid>
-       </Box>
-  </Grid>
-
-          
-              
-                {/* <Grid item xs={12} lg={12}>
-                  <Button
-                    variant="contained"
-                    color="primary"
-                    sx={{ mr: 1 }}
-                    type="submit"
-                 
-                  >
-                    Pesquisar
-                  </Button>
-                  <Button variant="contained" color="error">
-      
-                  </Button>
-                </Grid>
-       */}
-
-
-
-
-         <BlankCard>
+        <BlankCard>
           <TableContainer>
-          {valueTable.length > 0  ?
-            <>
-            <Table
-              aria-label="custom pagination table"
-              sx={{
-                whiteSpace: 'nowrap',
-              }}
-            >
-              <TableHead>
-                <TableRow style={{backgroundColor: '#5D87FF', borderRadius: '20px'}}>
+            {valueTable.length > 0 ?
+              <>
+                <Table
+                  aria-label="custom pagination table"
+                  sx={{
+                    whiteSpace: 'nowrap',
+                  }}
+                >
+                  <TableHead>
+                    <TableRow style={{ backgroundColor: '#5D87FF', borderRadius: '20px' }}>
 
-                <TableCell>
-                    <Typography style={{fontSize: '9pt', fontWeight: '600', textAlign: 'center',}}>FILIAL</Typography>
-                  </TableCell>
-      <TableCell>
-                    <Typography style={{fontSize: '9pt', fontWeight: '600', textAlign: 'center',}}>Nº DA NOTA</Typography>
-                  </TableCell>
-      <TableCell>
-                    <Typography style={{fontSize: '9pt', fontWeight: '600', textAlign: 'center',}}>PEDIDO</Typography>
-                  </TableCell>
-      <TableCell>
-                    <Typography style={{fontSize: '9pt', fontWeight: '600', textAlign: 'center',}}>DATA/HORA CADASTRO</Typography>
-                  </TableCell>
-      <TableCell>
-                    <Typography style={{fontSize: '9pt', fontWeight: '600', textAlign: 'center',}}>PEDIDO WEB</Typography>
-                  </TableCell>
-      <TableCell>
-                    <Typography style={{fontSize: '9pt', fontWeight: '600', textAlign: 'center',}}>CLIENTE</Typography>
-                  </TableCell>
-      <TableCell>
-                    <Typography style={{fontSize: '9pt', fontWeight: '600', textAlign: 'center',}}>VENDEDOR</Typography>
-                  </TableCell>
-      <TableCell>
-                    <Typography style={{fontSize: '9pt', fontWeight: '600', textAlign: 'center',}}>TRANSPORTADORA</Typography>
-                  </TableCell>
-      <TableCell>
-                    <Typography style={{fontSize: '9pt', fontWeight: '600', textAlign: 'center',}}>STATUS</Typography>
-                  </TableCell>
-      <TableCell>
-                    <Typography style={{fontSize: '9pt', fontWeight: '600', textAlign: 'center',}}>ESTOQUE</Typography>
-                  </TableCell>
-      <TableCell>
-                    <Typography style={{fontSize: '9pt', fontWeight: '600', textAlign: 'center',}}>VALOR TOTAL</Typography>
-                  </TableCell>
-          
-                </TableRow>
-              </TableHead>
-              <TableBody>
-              {valueTable.map((response:any, i) => (
-                  <TableRow key={i}>
-                    <TableCell>
-                      <Typography style={{fontSize: '8pt', textAlign: 'center'}}>{response.filial}</Typography>
-                    </TableCell>
-                    <TableCell>
-                      <Typography style={{fontSize: '8pt', textAlign: 'center'}}>{response.numeroNF}</Typography>
-                    </TableCell>
-                    <TableCell>
-                      <Typography style={{fontSize: '8pt', textAlign: 'center'}}>{response.pedido}</Typography>
-                    </TableCell>
-                    <TableCell>
-                      <Typography style={{fontSize: '8pt', textAlign: 'center'}}>{response.datahoraCadastro}</Typography>
-                    </TableCell>
-                    <TableCell>
-                      <Typography style={{fontSize: '8pt', textAlign: 'center'}}>{response.pedidoWeb}</Typography>
-                    </TableCell>
-                    <TableCell>
-                      <Typography style={{fontSize: '8pt', textAlign: 'center'}}>{response.cliente}</Typography>
-                    </TableCell>
-                    <TableCell>
-                      <Typography style={{fontSize: '8pt', textAlign: 'center'}}>{response.vendedor == "" ? 'Não tem' : response.vendedor}</Typography>
-                    </TableCell>
-                    <TableCell>
-                      <Typography style={{fontSize: '8pt', textAlign: 'center'}}>{response.transportadora == "" ? 'Não tem' : response.transportadora}</Typography>
-                    </TableCell>
-                    <TableCell>
-                      <Typography style={{fontSize: '8pt', textAlign: 'center'}}>{response.statusPainel}</Typography>
-                    </TableCell>
-                    <TableCell>
-                      <Typography style={{fontSize: '8pt', textAlign: 'center'}}>{response.statusEstoque}</Typography>
-                    </TableCell>
-                    <TableCell>
-                      <Typography style={{fontSize: '8pt', textAlign: 'center'}}>{response.valortotalPedido}</Typography>
-                    </TableCell>
-                  {/*  <TableCell>
-                      <Typography color="textSecondary" variant="h6" fontWeight="400">
-                        {row.items}
-                      </Typography>
-                    </TableCell>
+                      <TableCell>
+                        <Typography style={{ fontSize: '9pt', fontWeight: '600', textAlign: 'center', }}>FILIAL</Typography>
+                      </TableCell>
+                      <TableCell>
+                        <Typography style={{ fontSize: '9pt', fontWeight: '600', textAlign: 'center', }}>Nº DA NOTA</Typography>
+                      </TableCell>
+                      <TableCell>
+                        <Typography style={{ fontSize: '9pt', fontWeight: '600', textAlign: 'center', }}>PEDIDO</Typography>
+                      </TableCell>
+                      <TableCell>
+                        <Typography style={{ fontSize: '9pt', fontWeight: '600', textAlign: 'center', }}>DATA/HORA CADASTRO</Typography>
+                      </TableCell>
+                      <TableCell>
+                        <Typography style={{ fontSize: '9pt', fontWeight: '600', textAlign: 'center', }}>PEDIDO WEB</Typography>
+                      </TableCell>
+                      <TableCell>
+                        <Typography style={{ fontSize: '9pt', fontWeight: '600', textAlign: 'center', }}>CLIENTE</Typography>
+                      </TableCell>
+                      <TableCell>
+                        <Typography style={{ fontSize: '9pt', fontWeight: '600', textAlign: 'center', }}>VENDEDOR</Typography>
+                      </TableCell>
+                      <TableCell>
+                        <Typography style={{ fontSize: '9pt', fontWeight: '600', textAlign: 'center', }}>TRANSPORTADORA</Typography>
+                      </TableCell>
+                      <TableCell>
+                        <Typography style={{ fontSize: '9pt', fontWeight: '600', textAlign: 'center', }}>STATUS</Typography>
+                      </TableCell>
+                      <TableCell>
+                        <Typography style={{ fontSize: '9pt', fontWeight: '600', textAlign: 'center', }}>ESTOQUE</Typography>
+                      </TableCell>
+                      <TableCell>
+                        <Typography style={{ fontSize: '9pt', fontWeight: '600', textAlign: 'center', }}>VALOR TOTAL</Typography>
+                      </TableCell>
 
-                    <TableCell>
-                      <Typography color="textSecondary" variant="h6" fontWeight="400">
-                        ${row.total}
-                      </Typography>
-                    </TableCell>
+                    </TableRow>
+                  </TableHead>
+                  <TableBody>
+                    {valueTable.map((response: any, i) => (
+                      <TableRow key={i}>
+                        <TableCell>
+                          <Typography style={{ fontSize: '8pt', textAlign: 'center' }}>{response.filial}</Typography>
+                        </TableCell>
+                        <TableCell>
+                          <Typography style={{ fontSize: '8pt', textAlign: 'center' }}>{response.numeroNF}</Typography>
+                        </TableCell>
+                        <TableCell>
+                          <Typography style={{ fontSize: '8pt', textAlign: 'center' }}>{response.pedido}</Typography>
+                        </TableCell>
+                        <TableCell>
+                          <Typography style={{ fontSize: '8pt', textAlign: 'center' }}>{response.datahoraCadastro}</Typography>
+                        </TableCell>
+                        <TableCell>
+                          <Typography style={{ fontSize: '8pt', textAlign: 'center' }}>{response.pedidoWeb}</Typography>
+                        </TableCell>
+                        <TableCell>
+                          <Typography style={{ fontSize: '8pt', textAlign: 'center' }}>{response.cliente}</Typography>
+                        </TableCell>
+                        <TableCell>
+                          <Typography style={{ fontSize: '8pt', textAlign: 'center' }}>{response.vendedor == "" ? 'Não tem' : response.vendedor}</Typography>
+                        </TableCell>
+                        <TableCell>
+                          <Typography style={{ fontSize: '8pt', textAlign: 'center' }}>{response.transportadora == "" ? 'Não tem' : response.transportadora}</Typography>
+                        </TableCell>
+                        <TableCell>
+                          <Typography style={{ fontSize: '8pt', textAlign: 'center' }}>{response.statusPainel}</Typography>
+                        </TableCell>
+                        <TableCell>
+                          <Typography style={{ fontSize: '8pt', textAlign: 'center' }}>{response.statusEstoque}</Typography>
+                        </TableCell>
+                        <TableCell>
+                          <Typography style={{ fontSize: '8pt', textAlign: 'center' }}>{response.valortotalPedido}</Typography>
+                        </TableCell>
 
-                    <TableCell>
-                      <Typography variant="subtitle2">{row.date}</Typography>
-                    </TableCell>
-                    <TableCell>
-                      <Chip
-                        color={
-                          row.status === 'Completed'
-                            ? 'success'
-                            : row.status === 'Pending'
-                              ? 'warning'
-                              : row.status === 'Cancel'
-                                ? 'error'
-                                : 'secondary'
-                        }
-                        sx={{
-                          borderRadius: '6px',
-                        }}
-                        size="small"
-                        label={row.status}
-                      />
-                    </TableCell> */}
-                  </TableRow>
-                ))}
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                  <TableFooter>
+                  </TableFooter>
+                </Table>
+                <Pagination style={{ position: 'relative', top: '2px', marginBottom: '10px' }} count={totalPages} page={page} onChange={handlePageChange} color="primary" />
 
-                {/* {emptyRows > 0 && (
-                  <TableRow style={{ height: 53 * emptyRows }}>
-                    <TableCell colSpan={6} />
-                  </TableRow>
-                )} */}
-              </TableBody> 
-              <TableFooter>
-                {/* <TableRow> 
-                {valueTable.map((row) => (
-                
-                <TableCell scope="row">
-                  <Typography variant="subtitle1" color="textPrimary" fontWeight={600}>
-                    
-                  </Typography>
-                </TableCell>
-                ))}
-                <TablePagination
-                    rowsPerPageOptions={[5, 10, 25, { label: 'All', value: -1 }]}
-                    colSpan={6}
-                    count={valueTable.length}
-                    rowsPerPage={rowsPerPage}
-                    page={page}
-                    SelectProps={{
-                      native: true,
-                    }}
-                    onPageChange={handleChangePage}
-                    onRowsPerPageChange={handleChangeRowsPerPage}
-                    ActionsComponent={TablePaginationActions}
-                  /> 
-                </TableRow> */}
-              </TableFooter> 
-            </Table>
-            <Pagination style={{position: 'relative', top: '2px', marginBottom: '10px'}}  count={totalPages} page={page} onChange={handlePageChange} color="primary" />
-        
-            </>
-            : null}
+              </>
+              : null}
           </TableContainer>
-        </BlankCard>  
-     
-  
-    </PageContainer>
+        </BlankCard>
+
+
     </>
   );
 };
