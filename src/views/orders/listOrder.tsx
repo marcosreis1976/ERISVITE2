@@ -43,15 +43,17 @@ const LoadingSplash = () => {
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
+              height: '350px',
+              width: '100%',
               position: 'relative',
-              height: '100vh',
-              width: '100vw',
+              border: 'none',
               top: 0,
               left: 0,
+              color: 'red',
               zIndex: 9999,
           }}
       >
-          <CircularProgress style={{color: 'blud'}}/>
+          <CircularProgress />
       </Box>
   );
 };
@@ -278,6 +280,7 @@ const ListOrder = () => {
 
   const handleSearch = () => {
     setValueTable([])
+    setTotalPages(1)
     setLoading(true)
     if (nameFilial == -1) {
       setError(true)
@@ -343,6 +346,7 @@ const ListOrder = () => {
         //  const endIndex = startIndex + 10;
         //  const currentItems = response.data.slice(startIndex, endIndex);
         reload()
+        setLoading(false)
       },
         (error) => {
           console.log('error')
@@ -359,7 +363,7 @@ const ListOrder = () => {
 
         }
     );
-    setLoading(false)
+
   };
 
   const reload = () => {
@@ -860,9 +864,12 @@ const ListOrder = () => {
 
               </>
               : valueTable.length == 0 && totalPages != 1?
+  
                 <Alert variant="outlined" style={{top: '50px'}} severity="error">
               Sem registros
-            </Alert> : null}
+            </Alert> 
+
+            : null}
             {loading == true ?  <LoadingSplash /> : false}
            
           </TableContainer>
