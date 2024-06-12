@@ -19,7 +19,9 @@ import {
   Tooltip,
   TableContainer,
   Fab,
-  Pagination
+  Pagination,
+  CircularProgress,
+  Alert
 } from '@mui/material';
 import Welcome from 'src/layouts/full/shared/welcome/Welcome';
 import CustomCheckbox from '../../components/forms/theme-elements/CustomCheckbox';
@@ -34,6 +36,26 @@ import { getAffiliated, getListSellers, getListTransporters, itensRequest, itens
 import BlankCard from 'src/components/shared/BlankCard';
 
 
+const LoadingSplash = () => {
+  return (
+      <Box 
+          sx={{
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              position: 'relative',
+              height: '100vh',
+              width: '100vw',
+              top: 0,
+              left: 0,
+              zIndex: 9999,
+          }}
+      >
+          <CircularProgress style={{color: 'blud'}}/>
+      </Box>
+  );
+};
+
 
 const ListOrder = () => {
   let answer = useContext(CartContext)
@@ -45,7 +67,7 @@ const ListOrder = () => {
   const [nameVendedor, setNameVendedor] = useState<any>(-1);
   const [nameTransportador, setNameTransportador] = useState<any>(-1);
   const [namePedidos, setNamePedidos] = useState<any>(false);
-  const [nameStatuss, setNameStatuss] = useState<any>('');
+  const [nameStatuss, setNameStatuss] = useState<any>(-1);
   const [nameEstoque, setNameEstoque] = useState<any>('');
   const [nameCliente, setNameCliente] = useState<any>('');
   const [namePedido, setNamePedido] = useState<any>('');
@@ -64,7 +86,7 @@ const ListOrder = () => {
   const [statusLiberado, setStatusLiberado] = useState(0);
   const [statusEtiqueta, setStatusEtiqueta] = useState(0);
   const [statusProtocolo, setStatusProtocolo] = useState(0);
-
+  const [loading, setLoading] = useState(false);
   const [affiliated, setAffiliated] = useState([]);
   const [sellers, setSellers] = useState([]);
   const [transporters, setTransporters] = useState([]);
@@ -214,19 +236,52 @@ const ListOrder = () => {
   }
 
   const handleChangeDataInicial = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setNameDataInicial(event.target.value);
+    let input = event.target.value;
+
+    // Remove all non-digit characters
+    input = input.replace(/\D/g, '');
+
+    // Format the input as MM/DD/YYYY
+    if (input.length > 2) {
+      input = input.slice(0, 2) + '/' + input.slice(2);
+    }
+    if (input.length > 5) {
+      input = input.slice(0, 5) + '/' + input.slice(5);
+    }
+    if (input.length > 10) {
+      input = input.slice(0, 10);
+    }
+
+    setNameDataInicial(input);
   };
 
   const handleChangeDataFinal = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setNameDataFinal(event.target.value);
+    let input = event.target.value;
+
+    // Remove all non-digit characters
+    input = input.replace(/\D/g, '');
+
+    // Format the input as MM/DD/YYYY
+    if (input.length > 2) {
+      input = input.slice(0, 2) + '/' + input.slice(2);
+    }
+    if (input.length > 5) {
+      input = input.slice(0, 5) + '/' + input.slice(5);
+    }
+    if (input.length > 10) {
+      input = input.slice(0, 10);
+    }
+
+    setNameDataFinal(input);
   };
 
 
   const handleSearch = () => {
-
-    console.log(nameFilial)
+    setValueTable([])
+    setLoading(true)
     if (nameFilial == -1) {
       setError(true)
+      setLoading(false)
       return
     }
     // setErros(false)
@@ -243,8 +298,21 @@ const ListOrder = () => {
     nameCliente != '' ? parameter = parameter + `&cliente=${nameCliente}` : null
     namePedido != '' ? parameter = parameter + `&pedido=${namePedido}` : null
     namePedidoWeb != '' ? parameter = parameter + `&pedidoWeb=${namePedidoWeb}` : null
-    nameDataInicial != '' ? parameter = parameter + `&dataInicial=${nameDataInicial}` : null
-    nameDataFinal != '' ? parameter = parameter + `&dataFinal=${nameDataFinal}` : null
+    if(nameDataInicial != ''){
+      let partesData = nameDataInicial.split('/')
+      let dia = partesData[0]
+      let mes = partesData[1]
+      let ano = partesData[2]
+      parameter = parameter + `&dataInicial=${mes}/${dia}/${ano}`
+    } 
+    if(nameDataFinal != ''){
+      let partesData = nameDataFinal.split('/')
+      let dia = partesData[0]
+      let mes = partesData[1]
+      let ano = partesData[2]
+      parameter = parameter + `&dataFinal=${mes}/${dia}/${ano}`
+    }
+  
 
     console.log(nameStatuss)
     setParameter(parameter)
@@ -269,26 +337,29 @@ const ListOrder = () => {
         //  setAmount(response.data[0].totalRegistros)
         //  setSearch(false)
         //  setErros(false)
-
+        setLoading(false)
         setTotalPages(Math.ceil(response.data[0].totalRegistros / 7));
         //  const startIndex = (currentPage - 1) * 10;
         //  const endIndex = startIndex + 10;
         //  const currentItems = response.data.slice(startIndex, endIndex);
         reload()
       },
-      //  (error) => {
-      //    const _content =
-      //      (error.response && error.response.data) ||
-      //      error.message ||
-      //      error.toString();
-      //      setValueTable([])
-      //     //  setSearch(false)
-      //     //  setErros(true)
-      //     //  setErrorMessage('Nenhum registro encontrado!')
+        (error) => {
+          console.log('error')
+          setValueTable([])
+          setLoading(false)
+          //const _content =
+            // (error.response && error.response.data) ||
+            // error.message ||
+            // error.toString();
+            // setValueTable([])
+            //  setSearch(false)
+            //  setErros(true)
+            //  setErrorMessage('Nenhum registro encontrado!')
 
-      //  }
+        }
     );
-
+    setLoading(false)
   };
 
   const reload = () => {
@@ -376,6 +447,8 @@ const ListOrder = () => {
     setNamePedidoWeb('');
     setNameDataInicial('');
     setNameDataFinal('');
+    setValueTable([])
+    setTotalPages(1)
     setTimeout(() => {
       //  setPage(true)
     }, 10);
@@ -536,7 +609,7 @@ const ListOrder = () => {
                   fullWidth
                   variant="outlined"
                 >
-                  <MenuItem value="-1">{nameStatus[3]}</MenuItem>
+                   <MenuItem value="-1">{nameStatus[3]}</MenuItem>
                   {requests.map((option: any) => (
                     <MenuItem key={option.codigoTerceiro} value={option.nomeTerceiro}>
                       {option.nomeTerceiro}
@@ -691,6 +764,7 @@ const ListOrder = () => {
           </Box>
         </Grid>
         <BlankCard>
+
           <TableContainer>
             {valueTable.length > 0 ?
               <>
@@ -785,7 +859,12 @@ const ListOrder = () => {
                 <Pagination style={{ position: 'relative', top: '2px', marginBottom: '10px' }} count={totalPages} page={page} onChange={handlePageChange} color="primary" />
 
               </>
-              : null}
+              : valueTable.length == 0 && totalPages != 1?
+                <Alert variant="outlined" style={{top: '50px'}} severity="error">
+              Sem registros
+            </Alert> : null}
+            {loading == true ?  <LoadingSplash /> : false}
+           
           </TableContainer>
         </BlankCard>
 
