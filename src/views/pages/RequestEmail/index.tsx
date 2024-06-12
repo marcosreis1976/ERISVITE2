@@ -26,13 +26,12 @@ const RequestEmail = () => {
     const [dataPage] = useState(answer);
     const [nameFilial, setNameFilial] = useState<any>(-1);
     const [nameStatus, setNameStatus] = useState<any>(-1);
-    const [nameTitle, setNameTitle] = useState<any>('');
     const [affiliated, setAffiliated] = useState([]);
     const [valueTable, setValueTable] = useState([]);
     const [nameCliente, setNameCliente] = useState<any>('');
     const [namePedido, setNamePedido] = useState<any>('');
     const [totalPages, setTotalPages] = useState(1);
-    const [page, setPage] = useState(0);
+    const [page] = useState(0);
     const [dateStart, setDateStart] = useState('');
     const [dateEnd, setDateEnd] = useState('');
     const [parameter, setParameter] = useState('');
@@ -43,6 +42,7 @@ const RequestEmail = () => {
     ])
 
     useEffect(() => {
+      console.log(parameter)
 
       getAffiliated().then(
         (response) => {
@@ -93,12 +93,10 @@ const RequestEmail = () => {
       setDateEnd(`${inputValue.slice(0, 2)}/${inputValue.slice(2, 4)}/${inputValue.slice(4, 8)}`);
     }
       }
-    
-      const handleChangeTitle = (event: React.ChangeEvent<HTMLInputElement>) => {
-        setNameTitle(event.target.value);
-      }
+
 
       const search = () =>{
+
         let parameter = `codigoFilial=${nameFilial}`
 
         parameter = parameter + `&numeroPagina=1&tamanhoPagina=7&usuario=${dataPage.user?.userName}`
@@ -135,7 +133,7 @@ const RequestEmail = () => {
       }
 
       const handlePageChange = (event: React.ChangeEvent<unknown>, value: number) => {
-        let newPage = value
+
         event;
         // setErros(false)
         // setSearch(true)

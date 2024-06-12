@@ -28,7 +28,6 @@ import CustomCheckbox from '../../components/forms/theme-elements/CustomCheckbox
 import CustomTextField from '../../components/forms/theme-elements/CustomTextField';
 import CustomFormLabel from '../../components/forms/theme-elements/CustomFormLabel';
 import CustomSelect from '../../components/forms/theme-elements/CustomSelect';
-import PageContainer from 'src/components/container/PageContainer';
 import { CartContext } from "src/App";
 // import { UserType } from 'src/types/auth/auth';
 
@@ -87,17 +86,16 @@ const ListOrder = () => {
   const [statusSeparado, setStatusSeparado] = useState(0);
   const [statusLiberado, setStatusLiberado] = useState(0);
   const [statusEtiqueta, setStatusEtiqueta] = useState(0);
-  const [statusProtocolo, setStatusProtocolo] = useState(0);
   const [loading, setLoading] = useState(false);
   const [affiliated, setAffiliated] = useState([]);
-  const [sellers, setSellers] = useState([]);
+
   const [transporters, setTransporters] = useState([]);
   const [requests, setRequest] = useState([]);
   const [stocks, setStocks] = useState([]);
   const [nameStatus] = useState(['Sem Filial', 'Sem Vendedor', 'Sem Transportadora', 'Sem Status', 'Sem Estoque'])
   const [valueTable, setValueTable] = useState([]);
   // const [search, setSearch] = useState(true)
-  const [page, setPage] = useState(0);
+  const [page] = useState(0);
 
   const [error, setError] = useState(false);
 
@@ -111,9 +109,7 @@ const ListOrder = () => {
     },
   }));
 
-  const handleChangePage = (event: any, newPage: any) => {
-    setPage(newPage);
-  };
+
 
 
   useEffect(() => {
@@ -130,7 +126,7 @@ const ListOrder = () => {
         getListSellers().then(
           (response) => {
             console.log(response.data.length)
-            response.data.length > 0 ? setSellers(response.data) : null
+
             getListTransporters().then(
               (response) => {
                 response.data.length > 0 ? setTransporters(response.data) : null
@@ -152,8 +148,7 @@ const ListOrder = () => {
                     setStatusLiberado(resp4[0]['statusRegistros'])
                     let resp5 = response.data.filter((val: any) => val.statusNome == 'Etiqueta Liberada')
                     setStatusEtiqueta(resp5[0]['statusRegistros'])
-                    let resp6 = response.data.filter((val: any) => val.statusNome == 'Sem XML Protocolo')
-                    setStatusProtocolo(resp6[0]['statusRegistros'])
+    
 
                     // setListSummary(response.data)
 
@@ -349,7 +344,7 @@ const ListOrder = () => {
         setLoading(false)
       },
         (error) => {
-          console.log('error')
+          console.log(error)
           setValueTable([])
           setLoading(false)
           //const _content =
@@ -380,8 +375,7 @@ const ListOrder = () => {
         setStatusLiberado(resp4[0]['statusRegistros'])
         let resp5 = response.data.filter((val: any) => val.statusNome == 'Etiqueta Liberada')
         setStatusEtiqueta(resp5[0]['statusRegistros'])
-        let resp6 = response.data.filter((val: any) => val.statusNome == 'Sem XML Protocolo')
-        setStatusProtocolo(resp6[0]['statusRegistros'])
+
 
         // setListSummary(response.data)
 
