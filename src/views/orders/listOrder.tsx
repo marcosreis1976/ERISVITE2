@@ -498,7 +498,7 @@ const ListOrder = () => {
                   ))}
                 </CustomSelect>
               </Grid>  *
-              <Grid item xs={12} sm={2}>
+              <Grid item xs={12} sm={1}>
                 <CustomFormLabel htmlFor="standard-select-currency">Transportadora</CustomFormLabel>
                 <CustomSelect
                   value={nameTransportador}
@@ -546,33 +546,26 @@ const ListOrder = () => {
               </Grid>
 
 
-              <Grid item xs={12} sm={1} style={{ position: 'relative', top: '45px', textAlign: 'center' }}>
+              <Grid item xs={12} sm={3} style={{ position: 'relative', top: '45px', display: 'flex', justifyContent: 'space-between' }}>
                 <Tooltip title="Pesquisar" >
                   <Fab color="primary" onClick={() => handleSearch()} aria-label="send">
                     <IconSearch width={20} />
                   </Fab>
                 </Tooltip>
-
-
-              </Grid>
-
-              <Grid item xs={12} sm={1} style={{ position: 'relative', top: '45px', textAlign: 'center' }}>
                 <Tooltip title="Carregar">
                   <Fab color="primary" onClick={() => reload()}>
                     <IconRefresh width={20} />
                   </Fab>
                 </Tooltip>
-
-
-              </Grid>
-
-              <Grid item xs={12} sm={1} style={{ position: 'relative', top: '45px', textAlign: 'center' }}>
                 <Tooltip title="Limpar" onClick={() => clean()}>
                   <Fab color="error" >
                     <IconEraser width={20} />
                   </Fab>
                 </Tooltip>
+
+
               </Grid>
+
 
 
 
@@ -587,7 +580,7 @@ const ListOrder = () => {
           
           <Box>
 
-            <Grid container spacing={1} style={{ position: 'relative', top: '-40px' }}>
+            <Grid container spacing={1} style={{ position: 'relative', top: '-30px' }}>
               <Grid item xs={12} lg={1}>
 
 
@@ -649,16 +642,7 @@ const ListOrder = () => {
                   <Typography style={{ fontSize: '12pt', textAlign: 'center', fontWeight: 600 }}>{statusLiberado}</Typography>
                 </BoxStyled>
               </Grid>
-              <Grid item xs={12} sm={1} style={{ position: 'relative', top: '45px' }}>
-                <BoxStyled
-                  sx={{ backgroundColor: 'secondary.light', color: 'secondary.main' }}
-                  onClick={() => clickStatus('Etiqueta Liberada')}
-                >
-                  <Typography style={{ fontSize: '9pt', textAlign: 'center', width: '100%', fontWeight: 600 }}>Protocolos</Typography>
-                  <Typography style={{ fontSize: '12pt', textAlign: 'center', fontWeight: 600 }}>{statusProtocolo}</Typography>
-                </BoxStyled>
-
-              </Grid>
+      
 
 
               <Grid item xs={12} sm={1} style={{ position: 'relative', top: '45px' }}>

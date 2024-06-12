@@ -44,7 +44,7 @@ export const getAffiliated = () =>{
 export const itensRequest:any = [{codigoTerceiro: 0, nomeTerceiro: 'Pendente'}, {codigoTerceiro: 1, nomeTerceiro: 'Liberado para Expedição'}, 
 {codigoTerceiro: 2, nomeTerceiro: 'Em Separação'}, {codigoTerceiro: 3, nomeTerceiro: 'Separado'}, {codigoTerceiro: 4, nomeTerceiro: 'Liberado Faturamento'},
 {codigoTerceiro: 5, nomeTerceiro: 'Faturado'}, {codigoTerceiro: 6, nomeTerceiro: 'Autorizado Sefaz'}, {codigoTerceiro: 7, nomeTerceiro: 'Erro Autorização'}, 
-{codigoTerceiro: 9, nomeTerceiro: 'Etiqueta Liberada'}, 
+{codigoTerceiro: 11, nomeTerceiro: 'Sem XML Protocolo'},{codigoTerceiro: 9, nomeTerceiro: 'Etiqueta Liberada'}, 
 {codigoTerceiro: 10, nomeTerceiro: 'Etiqueta Impressa'},{codigoTerceiro: 11, nomeTerceiro: 'Despachado'}]
 
 export const itensStock:any = [{codigoTerceiro: 0, nomeTerceiro: 'Sem Reserva'}, 
